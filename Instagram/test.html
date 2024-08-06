@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Facebook OAuth Example</title>
+    <script>
+        async function initiateFacebookOAuth() {
+            const clientId = '771109578568389';
+            const redirectUri = 'https://example.com/';
+            const scope = 'instagram_basic,pages_show_list,publish_video,pages_manage_cta,pages_manage_instant_articles,pages_show_list,ads_management,business_management,pages_messaging,instagram_basic,instagram_manage_comments,instagram_manage_insights,instagram_content_publish,instagram_manage_messages,pages_read_engagement,pages_read_user_content,pages_manage_ads,pages_manage_posts,pages_manage_engagement,instagram_branded_content_ads_brand,instagram_manage_events';
+
+            const authUrl = `https://www.facebook.com/v20.0/dialog/oauth?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${encodeURIComponent(scope)}`;
+
+            // Redirect the user to the Facebook OAuth login page
+            window.location.href = authUrl;
+        }
+
+        function handleRedirect() {
+            const params = new URLSearchParams(window.location.search);
+            const code = params.get('code');
+            if (code) {
+                console.log('Authorization code:', code);
+                // Here you can handle the code, e.g., send it to your server to exchange for an access token
+            } else {
+                console.log('No authorization code found');
+            }
+        }
+
+        // Call handleRedirect on page load to check for the authorization code
+        window.onload = handleRedirect;
+    </script>
+</head>
+<body>
+    <button onclick="initiateFacebookOAuth()">Login with Facebook</button>
+</body>
+</html>

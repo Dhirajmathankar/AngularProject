@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Image Upload</title>
+    <style>
+        #progress {
+            display: none;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Upload POST to Instagram</h1>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <label for="imageUrl">Image URL:</label>
+        <input type="text" id="imageUrl" name="imageUrl" required><br><br>
+        <label for="caption">Caption:</label>
+        <input type="text" id="caption" name="caption" required><br><br>
+        <button type="submit">Upload</button>
+    </form>
+    <div id="progress">Uploading...</div>
+    <div id="result"></div>
+
+
+    <script>
+
+        document.getElementById('uploadForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const progressDiv = document.getElementById('progress');
+            const resultDiv = document.getElementById('result');
+            progressDiv.style.display = 'block';
+            resultDiv.innerHTML = '';
+
+            const imageUrl = document.getElementById('imageUrl').value;
+            const caption = document.getElementById('caption').value;
+
+            const formData = new FormData();
+            formData.append('imageUrl', imageUrl);
+            formData.append('caption', caption);
+
+            try {
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.text();
+                progressDiv.style.display = 'none';
+                resultDiv.innerHTML = result;
+            } catch (error) {
+                progressDiv.style.display = 'none';
+                resultDiv.innerHTML = 'Error: ' + error.message;
+            }
+        });
+    </script>
+</body>
+</html>
