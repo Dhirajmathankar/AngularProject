@@ -1,0 +1,13 @@
+*{
+	margin: 0px;
+	padding: 0px;
+}
+
+@media (max-width: 768px) {
+    .flex-date {
+        flex-wrap: wrap;
+    }
+	.width-mn{
+		width: 200px !important;
+	}
+}

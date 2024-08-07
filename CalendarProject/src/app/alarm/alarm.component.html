@@ -1,0 +1,44 @@
+<!-- add container Class  -->
+<div class="" style="position: fixed;
+z-index: 1;
+margin-left: 10px; right:10px; bottom: 10px;">
+	<div class="alarmCont">
+	  <div class="control">
+		<div class="clock">
+		  <div class="time">{{ hours }}:{{ minutes }}</div>
+		  <div class="ampm" style="margin-top: -36px !important;">{{ blnAmPm }}</div>
+		  <div class="seconds">{{ seconds }}</div>
+		</div>
+		<!-- <div class="date">
+		  <div class="day">{{ dayOfWeek }}</div>
+		  <div class="monthyear">{{ ddMMoo }}</div>
+		</div> -->
+		<div style="margin-left:5px ;">
+			<p style="color: white; margin: 0px;">Lorem ipsum dolor </p>
+			<p style="color: white;  margin: 0px;">Lorem ipsum dolor </p>
+			<p style="color: white;  margin: 0px;">Lorem ipsum dolor </p>
+		</div>
+		<!-- <div class="setAlarm"><span class="glyphicon glyphicon-time" aria-hidden="true"></span> set alarm</div> -->
+	  </div>
+	  <div class="alarmsSet">
+		<ul>
+		  <li class="scrollLeft">
+			<p>&lt;</p>
+		  </li>
+		  <li class="alarms" style="overflow-x: scroll; ">
+			<div class="alarm" *ngFor="let week of weeks">
+			  <ul *ngFor="let day of week">
+				<li>{{ day.day }}</li>
+				<li class="smaller">{{ day.appointment }}</li>
+				<li class="smaller"><a href="">x</a></li>
+			  </ul>
+			</div>
+		  </li>
+		  <li class="scrollRight">
+			<p>&gt;</p>
+		  </li>
+		</ul>
+	  </div>
+	</div>
+  </div>
+  

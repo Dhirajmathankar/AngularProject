@@ -1,0 +1,179 @@
+<app-alarm></app-alarm>
+
+<section style="margin: 0px; padding: 0px;">
+  <nav style="border: 2px solid gray; margin: 0px; padding: 5px; box-shadow: 0px 0px 4px 0px rgb(154, 153, 153);">
+    <div class="row text-center">
+      <div class="flex-date " style="display: flex;">
+        <div class="col-5" style="flex: 1;">
+          <div class="" style="display: flex;">
+            <div class="btn btn-outline-primary " mwlCalendarToday [(viewDate)]="viewDate"
+              style="border: 1px solid #0481e6; padding: 5px; border-radius: 5px; margin: 5px;">
+              Today
+            </div>
+            <div style="display: flex;">
+              <div class="btn " mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"
+                (viewDateChange)="closeOpenMonthViewDay()" style="margin: 5px; padding: 5px;">
+                <i class="fa-solid fa-angle-left" style="font-size: 20px;"></i>
+              </div>
+              <div class="btn " mwlCalendarNextView [view]="view" [(viewDate)]="viewDate"
+                (viewDateChange)="closeOpenMonthViewDay()" style=" margin: 5px;padding: 5px;">
+                <i class="fa-solid fa-angle-right" style="font-size: 20px;"></i>
+              </div>
+            </div>
+            <div class="" style="margin-left: 10px; margin-top: 10px; width: 100%;">
+              <h3 style="margin: 0px; padding: 0px;">{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-lg-3">
+          <div class="btn-group" style="display: flex;">
+            <div class="btn btn-primary" (click)="setView(CalendarView.Month)"
+              [class.active]="view === CalendarView.Month"
+              style="margin: 5px 8px; background-color: #0481e6; color: white; padding:5px 10px;border-radius: 5px; box-shadow: 0px 0px 4px 1px gray;">
+              <i class="fa-solid fa-calendar-days"></i> Month
+            </div>
+            <div class="btn btn-primary" (click)="setView(CalendarView.Week)"
+              [class.active]="view === CalendarView.Week"
+              style="margin: 5px 8px; background-color: #0481e6; color: white; padding:5px 10px;border-radius: 5px; box-shadow: 0px 0px 4px 1px gray;">
+              <i class="fa-solid fa-calendar-week"></i> Week
+            </div>
+            <div class="btn btn-primary" (click)="setView(CalendarView.Day)" [class.active]="view === CalendarView.Day"
+              style="margin: 5px 8px; background-color: #0481e6; color: white; padding:5px 10px;border-radius: 5px; box-shadow: 0px 0px 4px 1px gray;">
+              <i class="fa-regular fa-calendar"></i> Day
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</section>
+<!-- <div>
+  <div class="col-md-4"> -->
+    <!-- <div class="btn-group">
+      <div
+        class="btn btn-primary"
+        (click)="setView(CalendarView.Month)"
+        [class.active]="view === CalendarView.Month"
+      >
+        Month
+      </div>
+      <div
+        class="btn btn-primary"
+        (click)="setView(CalendarView.Week)"
+        [class.active]="view === CalendarView.Week"
+      >
+        Week
+      </div>
+      <div
+        class="btn btn-primary"
+        (click)="setView(CalendarView.Day)"
+        [class.active]="view === CalendarView.Day"
+      >
+        Day
+      </div>
+    </div> -->
+  <!-- </div>
+</div> -->
+
+
+<section class=" p-2">
+  <div [ngSwitch]="view">
+    <mwl-calendar-month-view *ngSwitchCase="CalendarView.Month" [viewDate]="viewDate" [events]="events"
+      [refresh]="refresh" [activeDayIsOpen]="activeDayIsOpen" (dayClicked)="dayClicked($event.day)"
+      (eventClicked)="handleEvent('Clicked', $event.event)" (eventTimesChanged)="eventTimesChanged($event)">
+    </mwl-calendar-month-view>
+    <mwl-calendar-week-view *ngSwitchCase="CalendarView.Week" [viewDate]="viewDate" [events]="events" [refresh]="refresh"
+      (eventClicked)="handleEvent('Clicked', $event.event)" (eventTimesChanged)="eventTimesChanged($event)">
+    </mwl-calendar-week-view>
+    <mwl-calendar-day-view *ngSwitchCase="CalendarView.Day" [viewDate]="viewDate" [events]="events" [refresh]="refresh"
+      (eventClicked)="handleEvent('Clicked', $event.event)" (eventTimesChanged)="eventTimesChanged($event)">
+    </mwl-calendar-day-view>
+  </div>
+</section>
+
+<!-- Everything you see below is just for the demo, you don't need to include it in your app -->
+
+<!-- <br /><br /><br />
+
+<h3>
+  Edit events
+  <button class="btn btn-primary float-end" (click)="addEvent()">
+    Add new
+  </button>
+  <div class="clearfix"></div>
+</h3> -->
+
+<!-- <div class="table-responsive" style="width: 100%; overflow-x: scroll; margin-bottom: 50px;">
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Starts at</th>
+        <th>Ends at</th>
+        <th>Remove</th>
+      </tr>
+    </thead>
+    {{events[0].title}}
+    <tbody>
+      <tr *ngFor="let event of events">
+        <td>
+          <input type="text" class="form-control" [(ngModel)]="event.title" (keyup)="refresh.next()" />
+        </td>
+
+        <td>
+          <input class="form-control" type="text" mwlFlatpickr [(ngModel)]="event.start"
+            (ngModelChange)="refresh.next()" [altInput]="true" [convertModelValue]="true" [enableTime]="true"
+            dateFormat="Y-m-dTH:i" altFormat="F j, Y H:i" placeholder="Not set" />
+        </td>
+        <td>
+          <input class="form-control" type="text" mwlFlatpickr [(ngModel)]="event.end" (ngModelChange)="refresh.next()"
+            [altInput]="true" [convertModelValue]="true" [enableTime]="true" dateFormat="Y-m-dTH:i"
+            altFormat="F j, Y H:i" placeholder="Not set" />
+        </td>
+        <td>
+          <button class="btn btn-danger" (click)="deleteEvent(event)">
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div> -->
+
+<ng-template #modalContent let-close="close" >
+ <div style="box-shadow: 5px 5px 5px 5px gray;">
+  <div class="modal-header" style="display: flex;background-color: #0481e6;">
+    <span style="font-size: 15px;flex: 1; color: white; margin-left: 5px;"> <b>{{eventstart}}</b></span>
+    <div>
+      <i class="fa-solid fa-trash " style="color:white; margin: 0px 5px;"></i>
+      <i class="fa-solid fa-edit " style="color: white; margin: 0px 5px;"></i>
+      <i class="fa-solid fa-calendar-days" style="color: white;margin: 0px 5px;"></i>
+      <button type="button text-left" class="" style="border: 0px !important;
+      background-color: #0481e6; color: white;margin: 0px 5px;" (click)="close()">
+        <span aria-hidden="true" style="font-size: 25px; color: white; "><b>&times;</b></span>
+      </button>
+    </div>
+   
+  </div>
+  <div class="modal-body">
+    <!-- <div>
+      Action:
+      <pre>{{ modalData?.action }}</pre>
+    </div> -->
+    <div style="margin-left: 5px;">
+      Event Name : {{eventtitle}} <br>
+     <!-- <span style="font-size: 10px;"> {{eventstart}}</span> -->
+      <!-- <pre>{{ modalData?.event | json }}</pre> -->
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-primary m-2" (click)="close()" style="padding: 1px 5px;">
+      OK
+    </button>
+    <!-- <div style="font-size: 12px;">
+      {{ modalData?.action }}
+    </div> -->
+  </div>
+ </div>
+</ng-template>
