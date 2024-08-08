@@ -76,7 +76,7 @@ export class AppComponent implements OnInit {
   activeDayIsOpen: boolean = true;
   alertedStartEvents: Set<string> = new Set(); // Store alerted start event IDs
   alertedEndEvents: Set<string> = new Set(); // Store alerted end event IDs
-
+  TodayTaskArray: any[] = []; // this array for store all the today event 
   constructor(private modal: NgbModal, private eventService: EventService) { }
 
   ngOnInit(): void {
@@ -89,9 +89,9 @@ export class AppComponent implements OnInit {
   }
 
   formatTitle(event: any, projectName: string): string {
-    const excludeKeys = new Set(['eventId', 'projectId', 'processId', 'botId', 'Created At', 'orchestratorStatus', 'Due Date' , 'SubCategory']);
+    const excludeKeys = new Set(['Start Time' , 'Task Creator',  'Due Date' , 'Task', 'Creator' , 'Created At' ]);
     const eventEntries = Object.entries(event)
-      .filter(([key]) => !excludeKeys.has(key))
+      .filter(([key]) => excludeKeys.has(key))
       .map(([key, value]) => `${key}-${value}`)
       .join(' , ');
 
@@ -125,12 +125,16 @@ export class AppComponent implements OnInit {
   loadEvents(): void {
     this.eventService.getEvents().subscribe((data: any) => {
       this.events = [];
+      const todayStart = startOfDay(new Date());
+      const todayEnd = endOfDay(new Date());
+      this.TodayTaskArray = []
       data.forEach((item: any) => {
         const eventsFromItem = item.taskList.map((event: any) => {
           const eventStart = new Date(event["Due Date"]);
-          let eventEnd = new Date(localStorage.getItem(`${item._id}-${event.eventId}-end`) || addHours(eventStart, 1/2).toString());
+          let eventEnd = new Date(localStorage.getItem(`${item._id}-${event.eventId}-end`) || addHours(eventStart, 0).toString());
+
           console.log(eventStart, "     ", eventEnd)
-          return {
+          const eventObject = {
             id: [item._id, event.eventId],
             start: eventStart,
             end: eventEnd,
@@ -143,10 +147,17 @@ export class AppComponent implements OnInit {
             },
             draggable: true,
           };
+          if (isSameDay(eventStart, todayStart)) {
+            this.TodayTaskArray.push(eventObject);
+          }
+          return eventObject;
         });
         this.events = this.events.concat(eventsFromItem);
       });
-  
+      if (this.childComponent) {
+        this.childComponent.getAllTodayEventArray(this.TodayTaskArray); 
+      }
+      //  console.log("Today's Tasks Array:", this.TodayTaskArray);
       this.refresh.next();
     });
   }
@@ -191,22 +202,22 @@ export class AppComponent implements OnInit {
         if (!this.alertedStartEvents.has(eventId)) {
           alert(`Event '${event.title}' is starting now.`);
           this.alertedStartEvents.add(eventId);
-          this.callChildMethod(30, event.title);
+          this.callChildMethod(30, event.title , event.id);
         }
       }
       if (eventEnd.getHours() === nowHour && eventEnd.getMinutes() === nowMinute) {
         if (!this.alertedEndEvents.has(eventId)) {
           alert(`Event '${event.title}' has ended.`);
           this.alertedEndEvents.add(eventId);
-          this.callChildMethod(0, `${event.title} has ended`);
+          this.callChildMethod(0, `${event.title} has ended`, event.id);
         }
       }
     });
   }
   
-  callChildMethod(duration: number, message: string): void {
+  callChildMethod(duration: number, message: string , botId : any): void {
     if (this.childComponent) {
-      this.childComponent.startCountdown(duration, message);
+      this.childComponent.startCountdown(duration, message, botId);
     }
   }
 

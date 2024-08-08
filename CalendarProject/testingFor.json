@@ -1,0 +1,10 @@
+[{
+	"actions": [{…}, {…}],
+"color": {"primary": "#1e90ff", "secondary": "#1e90ff"},
+"draggable" : true,
+"end" : "Thu Aug 08 2024 15:04:33 GMT+0530 (India Standard Time) ",
+"id" : ["66865ffe40d572d41b61a0db", "6667bec10225de384c6b8218"],
+"resizable" : {"beforeStart": true, "afterEnd": true},
+"start" : "Thu Aug 08 2024 15:22:33 GMT+0530 (India Standard Time) " ,
+"title": "Created At-2024-06-11T03:04:33.984Z , Creator-Kanish , Due Date-2024-08-08T09:52:33.000Z , projectName - Handbook (FAQ)"
+} ]

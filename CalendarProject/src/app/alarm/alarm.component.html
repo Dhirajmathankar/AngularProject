@@ -1,34 +1,47 @@
 <!-- add container Class  -->
-<div class="" style="position: fixed; z-index: 1 !important; margin-left: 10px; right: 10px; bottom: 10px;">
+<div class="draggable-container" 
+(mousedown)="onMouseDown($event)" 
+(mouseup)="onMouseUp($event)" 
+(mousemove)="onMouseMove($event)" style="position: fixed; z-index: 3 !important; margin-left: 10px; right: 10px; bottom: 10px;">
 	<div class="alarmCont">
 		<div class="control">
 			<div class="clock">
-				<div class="time">{{ countdownMinutes ?? 00 }}:{{ countdownSeconds??0 }}</div>
-				<div *ngIf="countdownMessage" style="color: white;">{{ countdownMessage }}</div>
+				<div class="time">{{ countdownMinutes ? countdownMinutes : '00'}}:{{ countdownSeconds ? countdownSeconds : '00'}}</div>	
 			</div>
 			<div style="margin-left:5px;">
-				<div style="color: white; display: flex; align-items: center;">
-					<i class="fa-solid fa-caret-left m-1" style="color: #0481e6;"></i>
+				<div style="color: white; display: flex; align-items: center; margin-top: -10px;">
+					<i class="fa-solid fa-caret-left m-1" style="color: #0481e6; cursor: pointer;" (click)="previousTask()"></i>
 					<div
 						style="margin: 0px 5px; padding: 0px ; flex: 1; overflow-x: auto; white-space: nowrap; scrollbar-width: none; -ms-overflow-style: none; font-size: 13px;">
-						Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-						Sint, laborum possimus saepe cupiditate officiis nemo doloribus perspiciatis architecto id
-						voluptatibus vitae error ut quasi nulla obcaecati blanditiis debitis sunt ratione.
+						 {{Task ? Task : 'Project Task Name . '}} | {{projectName ? projectName : 'Your Project Name'}}
 					</div>
-					<i class="fa-solid fa-caret-right m-1" style="color: #0481e6;"></i>
-					<i class="fa-solid fa-repeat m-1" style="color: #0481e6; font-size: 13px;"></i>
+					<i class="fa-solid fa-caret-right m-1" style="color: #0481e6; cursor: pointer;"  (click)="nextTast()"></i>
+					<i class="fa-solid fa-repeat m-1" style="color: #0481e6; font-size: 13px; cursor: pointer;"  (click)="reloadTask()"></i>
 				</div>
 
-				<p style="color: white; margin:0px 0px 0px 100px; font-size: 10px;">statusName-Assign
-					Task Creator-Monalisa Sahoo
-					Assignee-Admin
-					Task-JWT Implementation
-					projectName - Collab Pro CLD</p>
+				<div style="color: white; margin:0px 0px 0px 100px; font-size: 10px;">
+					<div></div>
+
+					<div style="display: flex;">
+						<div style="flex: 1;">
+							<p style="margin: 0px;">{{TaskCreator? TaskCreator : 'Task Creator'}} 
+							</p>
+							<p style="margin: 0px;">{{DueDate ? DueDate : 'Due Date'}}</p>
+						</div>
+						<div style="flex: 1;">
+							<div>{{CreatedAt ? CreatedAt : 'Start Time'}}</div>
+							<div style="font-size: 20px;">{{StartTimeClock ? StartTimeClock : '00:00'}}</div>
+						</div>
+					</div>
+				</div>
 			</div>
-			<div style="color: #0481e6 ;">
+			<div *ngIf="countdownMessage" style="color: white; font-size: 12px;">{{ countdownMessage  }}</div>
+			<div style="color: #0481e6 ;     position: absolute;
+			bottom: 5px;
+			right: 20px;">
 				<i class="fa-solid fa-forward m-1" style="cursor: pointer;" title="Skip Task"></i>
 				<i class="fa-regular fa-square-check m-1" style="cursor: pointer;" title="Complete Task"></i>
-				
+
 				<i class="fa-solid fa-circle-pause m-1" style="cursor: pointer;" title="Hold Task">
 					<sup class="m-1">6</sup>
 				</i>
