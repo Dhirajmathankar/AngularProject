@@ -21,7 +21,7 @@ import { AlarmComponent } from './alarm/alarm.component';
   imports: [
     BrowserModule,
     HttpClientModule,
-    FullCalendarModule,
+    // FullCalendarModule,
     BrowserAnimationsModule,
     CommonModule,
     FormsModule,

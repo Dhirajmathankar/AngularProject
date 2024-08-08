@@ -1,16 +1,17 @@
 import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent, CalendarView } from 'angular-calendar';
-import { single, Subject, takeLast } from 'rxjs';
+import { parseISO } from 'date-fns';
+import { Subject } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import {startOfDay,
+import {
+  startOfDay,
   endOfDay,
-  subDays,
-  addDays,
-  endOfMonth,
   isSameDay,
   isSameMonth,
-  addHours,} from 'date-fns';
+  addHours,
+} from 'date-fns';
 import { EventService } from './event.service';
+import { AlarmComponent } from './alarm/alarm.component';
 
 const colors: any = {
   red: {
@@ -25,8 +26,8 @@ const colors: any = {
     primary: '#e3bc08',
     secondary: '#FDF1BA',
   },
-  setdevColor :{
-    primary : '#1e90ff',
+  setdevColor: {
+    primary: '#1e90ff',
     secondary: 'rgb(30 144 255 / 8%)',
   }
 };
@@ -39,6 +40,8 @@ const colors: any = {
 export class AppComponent implements OnInit {
   @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any> | undefined;
 
+  @ViewChild(AlarmComponent) childComponent: AlarmComponent | undefined;
+
   view: CalendarView = CalendarView.Month;
   CalendarView = CalendarView;
   viewDate: Date = new Date();
@@ -47,7 +50,6 @@ export class AppComponent implements OnInit {
     event: CalendarEvent;
   } | undefined;
 
-  
   actions: CalendarEventAction[] = [
     {
       label: '<i class="fas fa-fw fa-pencil-alt"></i>',
@@ -62,7 +64,7 @@ export class AppComponent implements OnInit {
       a11yLabel: 'Delete',
       onClick: ({ event }: { event: CalendarEvent }): void => {
         this.events = this.events.filter((iEvent) => iEvent !== event);
-        this.eventService.deleteEvent(event['id']+"").subscribe();
+        this.eventService.deleteEvent(event['id'] + "").subscribe();
         this.handleEvent('Deleted', event);
         this.ngOnInit();
       },
@@ -72,52 +74,140 @@ export class AppComponent implements OnInit {
   refresh: Subject<void> = new Subject();
   events: CalendarEvent[] = [];
   activeDayIsOpen: boolean = true;
+  alertedStartEvents: Set<string> = new Set(); // Store alerted start event IDs
+  alertedEndEvents: Set<string> = new Set(); // Store alerted end event IDs
 
-  constructor(private modal: NgbModal, private eventService: EventService) {}
+  constructor(private modal: NgbModal, private eventService: EventService) { }
 
   ngOnInit(): void {
     this.loadEvents();
+
+    // Check every minute if any event's start or end time matches the current time
+    setInterval(() => {
+      this.checkForEventTimes();
+    }, 60000); // Check every minute
   }
 
   formatTitle(event: any, projectName: string): string {
-    const excludeKeys = new Set(['eventId', 'projectId', 'processId', 'botId']);
+    const excludeKeys = new Set(['eventId', 'projectId', 'processId', 'botId', 'Created At', 'orchestratorStatus', 'Due Date' , 'SubCategory']);
     const eventEntries = Object.entries(event)
       .filter(([key]) => !excludeKeys.has(key))
       .map(([key, value]) => `${key}-${value}`)
-      .join(' , '); 
-  
+      .join(' , ');
+
     return `${eventEntries} , projectName - ${projectName}`; // Append project name
   }
 
+  // loadEvents(): void {
+  //   this.eventService.getEvents().subscribe((data: any) => {
+  //     this.events = [];
+  //     data.forEach((item: any) => {
+  //       const eventsFromItem = item.taskList.map((event: any) => ({
+  //         id: [item._id, event.eventId],
+  //         start: new Date(event["Due Date"]),
+  //         end: addHours(new Date(event["Due Date"]), 1/2),
+  //         title: this.formatTitle(event, item.projectName),
+  //         color: colors.setdevColor,
+  //         actions: this.actions,
+  //         resizable: {
+  //           beforeStart: true,
+  //           afterEnd: true,
+  //         },
+  //         draggable: true,
+  //       }));
+  //       this.events = this.events.concat(eventsFromItem);
+  //     });
+
+  //     this.refresh.next();
+  //   });
+  // }
+
   loadEvents(): void {
-    this.eventService.getEvents().subscribe((data:any) => {
+    this.eventService.getEvents().subscribe((data: any) => {
       this.events = [];
       data.forEach((item: any) => {
-        const eventsFromItem = item.taskList.map((event: any) => ({
-          id: [item._id, event.eventId],
-          start: new Date(event["Due Date"]), 
-          end:addHours(new Date(event["Due Date"]), 1/2),
-          title: this.formatTitle(event, item.projectName),
-          color: colors.setdevColor,
-          actions: this.actions,
-          // allDay: true,
-          resizable: {
-            beforeStart: true,
-            afterEnd: true,
-          },
-          draggable: true,
-        }));
-        console.log(eventsFromItem)
+        const eventsFromItem = item.taskList.map((event: any) => {
+          const eventStart = new Date(event["Due Date"]);
+          let eventEnd = new Date(localStorage.getItem(`${item._id}-${event.eventId}-end`) || addHours(eventStart, 1/2).toString());
+          console.log(eventStart, "     ", eventEnd)
+          return {
+            id: [item._id, event.eventId],
+            start: eventStart,
+            end: eventEnd,
+            title: this.formatTitle(event, item.projectName),
+            color: colors.setdevColor,
+            actions: this.actions,
+            resizable: {
+              beforeStart: true,
+              afterEnd: true,
+            },
+            draggable: true,
+          };
+        });
         this.events = this.events.concat(eventsFromItem);
       });
-
-// console.log(this.events)
-      // data.taskList.forEach((event: any) =>{
-      // console.log(event['Due Date'] , " this is your value dhiraj")
-      // });
-
+  
       this.refresh.next();
     });
+  }
+  
+  // checkForEventTimes(): void {
+  //   const now = new Date();
+  //   const nowHour = now.getHours();
+  //   const nowMinute = now.getMinutes();
+
+  //   this.events.forEach(event => {
+  //     const eventStart = new Date(event.start);
+  //     const eventEnd = new Date(event.end+"");
+      
+  //     const eventId = `${event.id}`;
+  //     if (eventStart.getHours() === nowHour && eventStart.getMinutes() === nowMinute) {
+  //       if (!this.alertedStartEvents.has(eventId)) {
+  //         alert(`Event '${event.title}' is starting now.`);
+  //         this.alertedStartEvents.add(eventId);
+  //       }
+  //     }
+  //     if (eventEnd.getHours() === nowHour && eventEnd.getMinutes() === nowMinute) {
+  //       if (!this.alertedEndEvents.has(eventId)) {
+  //         alert(`Event '${event.title}' has ended.`);
+  //         this.alertedEndEvents.add(eventId);
+  //       }
+  //     }
+  //   });
+  // }
+
+  checkForEventTimes(): void {
+    const now = new Date();
+    const nowHour = now.getHours();
+    const nowMinute = now.getMinutes();
+  
+    this.events.forEach(event => {
+      const eventStart = new Date(event.start!);
+      const eventEnd = new Date(event.end!);
+      
+      const eventId = `${event.id}`;
+  
+      if (eventStart.getHours() === nowHour && eventStart.getMinutes() === nowMinute) {
+        if (!this.alertedStartEvents.has(eventId)) {
+          alert(`Event '${event.title}' is starting now.`);
+          this.alertedStartEvents.add(eventId);
+          this.callChildMethod(30, event.title);
+        }
+      }
+      if (eventEnd.getHours() === nowHour && eventEnd.getMinutes() === nowMinute) {
+        if (!this.alertedEndEvents.has(eventId)) {
+          alert(`Event '${event.title}' has ended.`);
+          this.alertedEndEvents.add(eventId);
+          this.callChildMethod(0, `${event.title} has ended`);
+        }
+      }
+    });
+  }
+  
+  callChildMethod(duration: number, message: string): void {
+    if (this.childComponent) {
+      this.childComponent.startCountdown(duration, message);
+    }
   }
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
@@ -131,17 +221,31 @@ export class AppComponent implements OnInit {
     }
   }
 
-  eventTimesChanged({ event, newStart }: CalendarEventTimesChangedEvent): void {
+  // eventTimesChanged({ event, newStart }: CalendarEventTimesChangedEvent): void {
+  //   this.events = this.events.map(iEvent => {
+  //     if (iEvent === event) {
+  //       const updatedEvent = { ...event, start: newStart, end: endOfDay(newStart) };
+  //       const projectId: any = event.id;
+  //       this.eventService.updateEvent(`${projectId[0]}`, `${projectId[1]}`, { "Due Date": newStart }).subscribe();
+  //       return updatedEvent;
+  //     }
+  //     return iEvent;
+  //   });
+  //   this.handleEvent('Dropped or resized', event);
+  //   this.ngOnInit();
+  // }
+
+  eventTimesChanged({ event, newStart,  newEnd }: CalendarEventTimesChangedEvent): void {
     this.events = this.events.map(iEvent => {
       if (iEvent === event) {
-        console.log('Updating event:', iEvent);
-        console.log('New start time:', newStart);
-        const updatedEvent = { ...event, start: newStart, end: endOfDay(newStart) };
-        // const projectId = event.projectId || 'unknown'; // Use a default or fallback value if needed
-      
-        const projectId : any = event.id;
-        // console.log('Project ID:', event.id, projectId[0]);
-        // console.log(`${event.projectId}` , `${event.id}`, { "Due Date": newStart });
+        const updatedEvent = { ...event, start: newStart, end: newEnd };
+        const projectId: any = event.id;
+        
+        // Save the end date to local storage
+        // console.log(newStart, '  ----  ', newEnd);
+        // updatedEvent['end'].toString()
+        localStorage.setItem(`${projectId[0]}-${projectId[1]}-end`, newEnd+"");
+  
         this.eventService.updateEvent(`${projectId[0]}`, `${projectId[1]}`, { "Due Date": newStart }).subscribe();
         return updatedEvent;
       }
@@ -150,17 +254,18 @@ export class AppComponent implements OnInit {
     this.handleEvent('Dropped or resized', event);
     this.ngOnInit();
   }
-  eventtitle : string = ""; 
-  eventstart : string = "";  
+
+  
+  eventtitle: string = "";
+  eventstart: string = "";
   handleEvent(action: string, event: CalendarEvent): void {
-    this.eventtitle = event.title ;
-    this.eventstart =  this.formatDate(event.start);
+    this.eventtitle = event.title;
+    this.eventstart = this.formatDate(event.start);
     this.modalData = { event, action };
     this.modal.open(this.modalContent, { size: 'md' });
   }
 
-  formatDate(dateString :Date) {
-    // console.log(dateString)
+  formatDate(dateString: Date) {
     const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
@@ -170,20 +275,16 @@ export class AppComponent implements OnInit {
     const month = months[date.getMonth()];
     const day = date.getDate();
 
-    // Extract hours and minutes from the date object
     let hours = date.getHours();
     const minutes = date.getMinutes();
 
-    // Determine AM/PM
     const ampm = hours >= 12 ? 'PM' : 'AM';
 
-    // Convert hours from 24-hour format to 12-hour format
     hours = hours % 12;
     hours = hours ? hours : 12; // the hour '0' should be '12'
 
     const startTime = `${hours}:${minutes < 10 ? '0' + minutes : minutes}${ampm}`;
-    
-    // Calculate end time (45 minutes after the start time)
+
     const endTimeDate = new Date(date.getTime() + 30 * 60000);
     let endHours = endTimeDate.getHours();
     const endMinutes = endTimeDate.getMinutes();
@@ -195,29 +296,14 @@ export class AppComponent implements OnInit {
     const endTime = `${endHours}:${endMinutes < 10 ? '0' + endMinutes : endMinutes}${endAmpm}`;
 
     return `${dayOfWeek}, ${month} ${day}⋅${startTime} – ${endTime}`;
-}
+  }
 
   addEvent(): void {
-    // const newEvent: CalendarEvent = {
-    //   start: startOfDay(new Date()),
-    //   end: endOfDay(new Date()),
-    //   title: 'New event',
-    //   color: colors.yellow,
-    //   draggable: true,
-    //   resizable: {
-    //     beforeStart: true,
-    //     afterEnd: true,
-    //   },
-    // };
-    // this.eventService.addEvent(newEvent).subscribe(event => {
-    //   this.events = [...this.events, event];
-    //   this.refresh.next();
-    // });
+    // Function to add new events
   }
 
   deleteEvent(_eventToDelete: CalendarEvent) {
-    // this.events = this.events.filter(event => event !== eventToDelete);
-    // this.eventService.deleteEvent(`${eventToDelete.id}`).subscribe();
+    // Function to delete events
   }
 
   setView(view: CalendarView) {

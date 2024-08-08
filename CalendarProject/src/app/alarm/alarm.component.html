@@ -1,44 +1,46 @@
 <!-- add container Class  -->
-<div class="" style="position: fixed;
-z-index: 1;
-margin-left: 10px; right:10px; bottom: 10px;">
+<div class="" style="position: fixed; z-index: 1 !important; margin-left: 10px; right: 10px; bottom: 10px;">
 	<div class="alarmCont">
-	  <div class="control">
-		<div class="clock">
-		  <div class="time">{{ hours }}:{{ minutes }}</div>
-		  <div class="ampm" style="margin-top: -36px !important;">{{ blnAmPm }}</div>
-		  <div class="seconds">{{ seconds }}</div>
-		</div>
-		<!-- <div class="date">
-		  <div class="day">{{ dayOfWeek }}</div>
-		  <div class="monthyear">{{ ddMMoo }}</div>
-		</div> -->
-		<div style="margin-left:5px ;">
-			<p style="color: white; margin: 0px;">Lorem ipsum dolor </p>
-			<p style="color: white;  margin: 0px;">Lorem ipsum dolor </p>
-			<p style="color: white;  margin: 0px;">Lorem ipsum dolor </p>
-		</div>
-		<!-- <div class="setAlarm"><span class="glyphicon glyphicon-time" aria-hidden="true"></span> set alarm</div> -->
-	  </div>
-	  <div class="alarmsSet">
-		<ul>
-		  <li class="scrollLeft">
-			<p>&lt;</p>
-		  </li>
-		  <li class="alarms" style="overflow-x: scroll; ">
-			<div class="alarm" *ngFor="let week of weeks">
-			  <ul *ngFor="let day of week">
-				<li>{{ day.day }}</li>
-				<li class="smaller">{{ day.appointment }}</li>
-				<li class="smaller"><a href="">x</a></li>
-			  </ul>
+		<div class="control">
+			<div class="clock">
+				<div class="time">{{ countdownMinutes ?? 00 }}:{{ countdownSeconds??0 }}</div>
+				<div *ngIf="countdownMessage" style="color: white;">{{ countdownMessage }}</div>
 			</div>
-		  </li>
-		  <li class="scrollRight">
-			<p>&gt;</p>
-		  </li>
-		</ul>
-	  </div>
+			<div style="margin-left:5px;">
+				<div style="color: white; display: flex; align-items: center;">
+					<i class="fa-solid fa-caret-left m-1" style="color: #0481e6;"></i>
+					<div
+						style="margin: 0px 5px; padding: 0px ; flex: 1; overflow-x: auto; white-space: nowrap; scrollbar-width: none; -ms-overflow-style: none; font-size: 13px;">
+						Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+						Sint, laborum possimus saepe cupiditate officiis nemo doloribus perspiciatis architecto id
+						voluptatibus vitae error ut quasi nulla obcaecati blanditiis debitis sunt ratione.
+					</div>
+					<i class="fa-solid fa-caret-right m-1" style="color: #0481e6;"></i>
+					<i class="fa-solid fa-repeat m-1" style="color: #0481e6; font-size: 13px;"></i>
+				</div>
+
+				<p style="color: white; margin:0px 0px 0px 100px; font-size: 10px;">statusName-Assign
+					Task Creator-Monalisa Sahoo
+					Assignee-Admin
+					Task-JWT Implementation
+					projectName - Collab Pro CLD</p>
+			</div>
+			<div style="color: #0481e6 ;">
+				<i class="fa-solid fa-forward m-1" style="cursor: pointer;" title="Skip Task"></i>
+				<i class="fa-regular fa-square-check m-1" style="cursor: pointer;" title="Complete Task"></i>
+				
+				<i class="fa-solid fa-circle-pause m-1" style="cursor: pointer;" title="Hold Task">
+					<sup class="m-1">6</sup>
+				</i>
+				<i class="fa-solid fa-list-check m-1" style="cursor: pointer;" title="Completed Task">
+					<sup class="m-1">6</sup>
+				</i>
+				<i class="fa-regular fa-folder" style="cursor: pointer;" title="Remening Task">
+					<sup class="m-1">6</sup>
+				</i>
+				<i class="fa-solid fa-headphones-simple m-1" style="cursor: pointer;"></i>
+			</div>
+			<!-- <button (click)="startCountdown()" style="margin-top: 10px;">Start 30-minute Timer</button> -->
+		</div>
 	</div>
-  </div>
-  
+</div>

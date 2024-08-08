@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-alarm',
   templateUrl: './alarm.component.html',
-  styleUrl: './alarm.component.css'
+  styleUrls: ['./alarm.component.css']
 })
 export class AlarmComponent implements OnInit {
   hours: string | undefined;
@@ -13,6 +13,11 @@ export class AlarmComponent implements OnInit {
   dayOfWeek: string | undefined;
   ddMMoo: string | undefined;
   weeks: any[] = [];
+
+  countdownMinutes: string | undefined;
+  countdownSeconds: string | undefined;
+  countdownMessage: string | undefined;
+  countdownInterval: any;
 
   days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
   suffixes = ["th", "st", "nd", "rd"];
@@ -90,5 +95,26 @@ export class AlarmComponent implements OnInit {
       default:
         return '';
     }
+  }
+
+  startCountdown(duration: number, message: string): void{
+    console.log("Hello console")
+    this.countdownMessage = 'Time starts now!';
+    let totalSeconds = duration * 60; // 30 minutes in seconds
+
+    this.countdownInterval = setInterval(() => {
+      const minutes = Math.floor(totalSeconds / 60);
+      const seconds = totalSeconds % 60;
+
+      this.countdownMinutes = minutes < 10 ? '0' + minutes : minutes.toString();
+      this.countdownSeconds = seconds < 10 ? '0' + seconds : seconds.toString();
+
+      if (totalSeconds <= 0) {
+        clearInterval(this.countdownInterval);
+        this.countdownMessage = 'Your time is up!';
+      } else {
+        totalSeconds--;
+      }
+    }, 1000);
   }
 }
