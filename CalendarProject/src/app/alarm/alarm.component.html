@@ -10,12 +10,12 @@
 			</div>
 			<div style="margin-left:5px;">
 				<div style="color: white; display: flex; align-items: center; margin-top: -10px;">
-					<i class="fa-solid fa-caret-left m-1" style="color: #0481e6; cursor: pointer;" (click)="previousTask()"></i>
+					<i class="fa-solid fa-caret-left m-1" *ngIf="previousTaskButton" style="color: #0481e6; cursor: pointer;" (click)="previousTask()"></i>
 					<div
 						style="margin: 0px 5px; padding: 0px ; flex: 1; overflow-x: auto; white-space: nowrap; scrollbar-width: none; -ms-overflow-style: none; font-size: 13px;">
 						 {{Task ? Task : 'Project Task Name . '}} | {{projectName ? projectName : 'Your Project Name'}}
 					</div>
-					<i class="fa-solid fa-caret-right m-1" style="color: #0481e6; cursor: pointer;"  (click)="nextTast()"></i>
+					<i class="fa-solid fa-caret-right m-1" *ngIf="nextTaskButton" style="color: #0481e6; cursor: pointer;"  (click)="nextTast()"></i>
 					<i class="fa-solid fa-repeat m-1" style="color: #0481e6; font-size: 13px; cursor: pointer;"  (click)="reloadTask()"></i>
 				</div>
 
@@ -51,7 +51,10 @@
 				<i class="fa-regular fa-folder" style="cursor: pointer;" title="Remening Task">
 					<sup class="m-1">6</sup>
 				</i>
-				<i class="fa-solid fa-headphones-simple m-1" style="cursor: pointer;"></i>
+				<i class="fa-solid fa-volume-xmark m-1" *ngIf="unmeuteButtonIcon" style="cursor: pointer;" (click)="unmeuteButton()"></i>
+				<i class="fa-solid fa-headphones-simple m-1" *ngIf="meuteButtonIcon" style="cursor: pointer;" (click)="meuteButton()"></i>
+				<i class="fa-solid fa-volume-high m-1" *ngIf="runingAlarmButtonIcon" style="cursor: pointer;"></i>
+
 			</div>
 			<!-- <button (click)="startCountdown()" style="margin-top: 10px;">Start 30-minute Timer</button> -->
 		</div>

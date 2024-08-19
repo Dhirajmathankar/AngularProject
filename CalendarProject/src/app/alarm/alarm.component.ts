@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { format } from 'date-fns';
+import { format, getHours, getMinutes } from 'date-fns';
 
 @Component({
   selector: 'app-alarm',
@@ -171,12 +171,16 @@ export class AlarmComponent implements OnInit {
    DueDate : string | undefined ;
    CreatedAt : string | undefined ;
    botId : any | undefined = ["66865ffe40d572d41b61a0db", "665d69fd110d2662a7e3e281"];
-  
+   previousTaskButton : boolean = true;
+   nextTaskButton : boolean = true;
+   unmeuteButtonIcon : boolean | undefined = false;
+   meuteButtonIcon : boolean | undefined  = true;
+   runingAlarmButtonIcon : boolean | undefined = false ;
  
   startCountdown(duration: number, message: string, botId :any): void{
 this.botId = botId ;
 localStorage.setItem('botIds', JSON.stringify(this.botId));
-    console.log("Hello console", botId )
+    // console.log("Hello console", botId )
     this.countdownMessage = 'Time starts now!';
     const result = this.parseStringToKeyValue(message);
     this.Task  = result.keyValueObject['Task'];
@@ -186,7 +190,10 @@ localStorage.setItem('botIds', JSON.stringify(this.botId));
     this.CreatedAt = result.keyValueObject['Created At']
     this.resultObjectClockInfo = result.keyValueObject;
     this.StartTimeClock = result.createdAtTime;
-    console.log(this.resultObjectClockInfo)
+    // console.log(this.resultObjectClockInfo)
+    if(this.meuteButtonIcon){
+      this.alarmTop();
+    }
     let totalSeconds = duration * 60; // 30 minutes in seconds
 
     this.countdownInterval = setInterval(() => {
@@ -205,16 +212,23 @@ localStorage.setItem('botIds', JSON.stringify(this.botId));
     }, 1000);
   }
 
-  TodayTaskArray : [] = []
+  TodayTaskArray : any = []
   getAllTodayEventArray(TodayTaskArray:any){
-    this.countdownMessage = 'Your time break!'
-    console.log("Today's Tasks Array in child component:", TodayTaskArray);
+  
+    // console.log("Today's Tasks Array in child component:", TodayTaskArray);
     this.TodayTaskArray = TodayTaskArray.sort((a:any , b:any) => a.start.getTime() - b.start.getTime());
-    console.log("Today's Tasks Array in child component:", this.TodayTaskArray);
+    if (TodayTaskArray.length == 0) {
+      this.countdownMessage = "Today's Task not available!";
+    }else{
+      
+    
+      // console.log(this.TodayTaskArray[0]['start'], " ------------ ")
+      this.countdownMessage = `Your task will start at ${(getHours(this.TodayTaskArray[0]['start']))%12}:${getMinutes(this.TodayTaskArray[0]['start'])}.`
+    }
   }
 
-  TempTask : string | undefined ;
-  TempprojectName : string | undefined ;
+
+
   previousTask(){
     let currentIndex = -1;
     if (!this.botId) {
@@ -222,24 +236,24 @@ localStorage.setItem('botIds', JSON.stringify(this.botId));
     }else{
       for (let i = 0; i < this.TodayTaskArray.length; i++) {
         const task = this.TodayTaskArray[i];
-        for (let j = 0; j < this.botId.length; j++) {
-          if (this.botId[j] === task['id'][0]) {
+          if (this.botId[0] === task['id'][0] && this.botId[1] === task['id'][1] ) {
             currentIndex = i;
             break;
           }
         }
-        if (currentIndex !== -1) {
-          break;
-        }
-      }
     }
-  if (currentIndex > 0) {
+  if (currentIndex >= 0) {
     const previousTask = this.TodayTaskArray[currentIndex - 1];
     this.botId = previousTask['id'];
     const result = this.parseStringToKeyValue(previousTask['title']);
     this.Task  = result.keyValueObject['Task'];
     this.projectName = result.keyValueObject['projectName'];
-    console.log(this.botId, "    ", this.Task , "     " , this.projectName)
+    this.CreatedAt = result.keyValueObject['Created At']
+    this.StartTimeClock = result.createdAtTime;
+    this.nextTaskButton = true;
+  }else{
+    this.previousTaskButton = false ;
+   
   }
     // alert("previouse Task")
   }
@@ -251,34 +265,83 @@ localStorage.setItem('botIds', JSON.stringify(this.botId));
     }else{
       for (let i = 0; i < this.TodayTaskArray.length; i++) {
         const task = this.TodayTaskArray[i];
-        for (let j = 0; j < this.botId.length; j++) {
-          if (this.botId[j] === task['id'][0]) {
+        // for (let j = 0; j < this.botId.length; j++) {
+          if (this.botId[0] === task['id'][0] && this.botId[1] === task['id'][1] ) {
             currentIndex = i;
             break;
           }
-        }
-        if (currentIndex !== -1) {
-          break;
-        }
       }
     }
-
   if (currentIndex >= 0 && currentIndex < this.TodayTaskArray.length - 1) {
     const nextTask = this.TodayTaskArray[currentIndex + 1];
-    this.TempTask = nextTask['Task'];
-    this.TempprojectName = nextTask['ProjectName'];
-  } else if (currentIndex === this.TodayTaskArray.length - 1) {
-    alert("No next task available. This is the last task.");
-  } else {
-    alert("No matching task found.");
+    this.botId = nextTask['id'];
+    const result = this.parseStringToKeyValue(nextTask['title']);
+    this.Task  = result.keyValueObject['Task'];
+    this.projectName = result.keyValueObject['projectName'];
+    this.CreatedAt = result.keyValueObject['Created At']
+    this.StartTimeClock = result.createdAtTime;
+    this.previousTaskButton = true;
+  }else {
+    this.nextTaskButton = false;
+ 
   }
   }
 
   reloadTask(){
     const storedBotIds = localStorage.getItem('botIds');
-    if (storedBotIds) {
-      return JSON.parse(storedBotIds);
+    let currentIndex = -1;
+    let botId; 
+    if (!storedBotIds) {
+      alert("Sorry your Task is not loaded!")
+    }else{
+      for (let i = 0; i < this.TodayTaskArray.length; i++) {
+        const task = this.TodayTaskArray[i];
+        botId = JSON.parse(storedBotIds);
+          if (botId[0] === task['id'][0] && botId[1] === task['id'][1] ) {
+            currentIndex = i;
+            break;
+          }
+      }
     }
-    alert("Reload Task")
+    const nextTask = this.TodayTaskArray[currentIndex];
+    this.botId = nextTask['id'];
+    const result = this.parseStringToKeyValue(nextTask['title']);
+    this.Task  = result.keyValueObject['Task'];
+    this.projectName = result.keyValueObject['projectName'];
+    this.CreatedAt = result.keyValueObject['Created At']
+    this.StartTimeClock = result.createdAtTime;
+    this.previousTaskButton = true;
+    this.nextTaskButton = true;
+  }
+
+
+  unmeuteButton(){
+    this.unmeuteButtonIcon  = false;
+    this.meuteButtonIcon = true;
+    this.runingAlarmButtonIcon  = false ;
+  }
+  meuteButton(){
+    this.unmeuteButtonIcon  = true;
+    this.meuteButtonIcon = false;
+    this.runingAlarmButtonIcon  = false ;
+  }
+
+  alarmTop(){
+    const alarmAudio = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'); 
+    alarmAudio.play().catch(error => {
+        // console.error('Error playing the audio:', error);
+    });
+    this.unmeuteButtonIcon  = false;
+    this.meuteButtonIcon = false;
+    this.runingAlarmButtonIcon  = true ;
+
+    setTimeout(() => {
+        alarmAudio.pause();
+        alarmAudio.currentTime = 0;
+        this.unmeuteButtonIcon  = false;
+        this.meuteButtonIcon = true;
+        this.runingAlarmButtonIcon  = false ;
+    }, 30000); 
+    // console.log("Hello console")
   }
 }

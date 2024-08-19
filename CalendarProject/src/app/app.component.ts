@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef, ComponentFactoryResolver } from '@angular/core';
 import { CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent, CalendarView } from 'angular-calendar';
 import { parseISO } from 'date-fns';
 import { Subject } from 'rxjs';
@@ -9,7 +9,9 @@ import {
   isSameDay,
   isSameMonth,
   addHours,
+  addMinutes
 } from 'date-fns';
+// import { DatePipe } from '@angular/common';
 import { EventService } from './event.service';
 import { AlarmComponent } from './alarm/alarm.component';
 
@@ -77,7 +79,8 @@ export class AppComponent implements OnInit {
   alertedStartEvents: Set<string> = new Set(); // Store alerted start event IDs
   alertedEndEvents: Set<string> = new Set(); // Store alerted end event IDs
   TodayTaskArray: any[] = []; // this array for store all the today event 
-  constructor(private modal: NgbModal, private eventService: EventService) { }
+  // datePipe: any;
+  constructor(public modal: NgbModal, private eventService: EventService) { }
 
   ngOnInit(): void {
     this.loadEvents();
@@ -130,16 +133,15 @@ export class AppComponent implements OnInit {
       this.TodayTaskArray = []
       data.forEach((item: any) => {
         const eventsFromItem = item.taskList.map((event: any) => {
-          const eventStart = new Date(event["Due Date"]);
-          let eventEnd = new Date(localStorage.getItem(`${item._id}-${event.eventId}-end`) || addHours(eventStart, 0).toString());
-
-          console.log(eventStart, "     ", eventEnd)
+          const eventStart =  startOfDay(new Date(event["Due Date"]));
+          let eventEnd = endOfDay(new Date(event["End Date"]));
+          // console.log(eventStart, "     ", eventEnd)
           const eventObject = {
             id: [item._id, event.eventId],
-            start: eventStart,
+            start:eventStart,
             end: eventEnd,
             title: this.formatTitle(event, item.projectName),
-            color: colors.setdevColor,
+            color: colors.blue,
             actions: this.actions,
             resizable: {
               beforeStart: true,
@@ -156,6 +158,7 @@ export class AppComponent implements OnInit {
       });
       if (this.childComponent) {
         this.childComponent.getAllTodayEventArray(this.TodayTaskArray); 
+      
       }
       //  console.log("Today's Tasks Array:", this.TodayTaskArray);
       this.refresh.next();
@@ -187,6 +190,15 @@ export class AppComponent implements OnInit {
   //   });
   // }
 
+  getTimeDifference(date1:any, date2 : any) {
+    const startDate = new Date(date1);
+    const endDate = new Date(date2);
+    const differenceInMillis = endDate.getTime() - startDate.getTime();
+    const minutes = Math.floor(differenceInMillis / (1000 * 60));
+    // const seconds = Math.floor((differenceInMillis % (1000 * 60)) / 1000);
+    return minutes;
+}
+
   checkForEventTimes(): void {
     const now = new Date();
     const nowHour = now.getHours();
@@ -202,14 +214,15 @@ export class AppComponent implements OnInit {
         if (!this.alertedStartEvents.has(eventId)) {
           alert(`Event '${event.title}' is starting now.`);
           this.alertedStartEvents.add(eventId);
-          this.callChildMethod(30, event.title , event.id);
+          const differenceOfMinute = this.getTimeDifference(event['start'], event['end'])
+          this.callChildMethod(differenceOfMinute, event.title , event.id);
         }
       }
       if (eventEnd.getHours() === nowHour && eventEnd.getMinutes() === nowMinute) {
         if (!this.alertedEndEvents.has(eventId)) {
           alert(`Event '${event.title}' has ended.`);
           this.alertedEndEvents.add(eventId);
-          this.callChildMethod(0, `${event.title} has ended`, event.id);
+          this.callChildMethod(5, `${event.title} has ended`, event.id);
         }
       }
     });
@@ -246,22 +259,20 @@ export class AppComponent implements OnInit {
   //   this.ngOnInit();
   // }
 
-  eventTimesChanged({ event, newStart,  newEnd }: CalendarEventTimesChangedEvent): void {
-    this.events = this.events.map(iEvent => {
+   eventTimesChanged({ event, newStart,  newEnd }: CalendarEventTimesChangedEvent): void {
+    console.log(event, newStart, newEnd)
+    this.events =  this.events.map( (iEvent )=> {
       if (iEvent === event) {
         const updatedEvent = { ...event, start: newStart, end: newEnd };
         const projectId: any = event.id;
-        
-        // Save the end date to local storage
-        // console.log(newStart, '  ----  ', newEnd);
-        // updatedEvent['end'].toString()
         localStorage.setItem(`${projectId[0]}-${projectId[1]}-end`, newEnd+"");
   
-        this.eventService.updateEvent(`${projectId[0]}`, `${projectId[1]}`, { "Due Date": newStart }).subscribe();
+        this.eventService.updateEvent(`${projectId[0]}`, `${projectId[1]}`, { "Due Date": newStart , "End Date":newEnd}).subscribe();
         return updatedEvent;
       }
       return iEvent;
     });
+    this.openEditForm(event,  newStart,  newEnd )
     this.handleEvent('Dropped or resized', event);
     this.ngOnInit();
   }
@@ -324,4 +335,64 @@ export class AppComponent implements OnInit {
   closeOpenMonthViewDay() {
     this.activeDayIsOpen = false;
   }
+
+
+  // ---------------------------------------
+
+  editingEvent: CalendarEvent | null = null;
+
+
+
+  openEditForm(event: CalendarEvent,  newStart : any,  newEnd:any ): void {
+
+    this.editingEvent = { ...event ,  start: new Date( newStart), end: new Date(newEnd) }; // Clone the event 
+  }
+  
+  cancelEdit(): void {
+    this.editingEvent = null;
+  }
+
+  saveChanges() {
+    console.log("Hello console", this.editingEvent)
+    if (this.editingEvent) {
+      // this.events = await Promise.all(
+        this.events.map(async (event) => {
+          if (event === this.editingEvent) {
+            const projectId: any = this.editingEvent.id;
+            
+            try {
+              console.log(event, `${projectId[0]}`, `${projectId[1]}`, {
+                "Due Date": this.editingEvent.start,
+                "End Date": this.editingEvent.end
+              });
+  
+              // Await the updateEvent service call
+             this.eventService.updateEvent(`${projectId[0]}`, `${projectId[1]}`, {
+                "Due Date": this.editingEvent.start,
+                "End Date": this.editingEvent.end
+              }); // Convert Observable to Promise for async/await
+  console.log("jala apla ta ")
+              return this.editingEvent;
+            } catch (error) {
+              console.error("Failed to update event:", error);
+              console.log("nahi jala jala apla ta ")
+              // Handle the error (e.g., show a notification to the user)
+            }
+          }
+          return event;
+        })
+      // );
+    }
+  }
+
+  // formatDateForchange(date: Date): any {
+  //   console.log(("Hello console Dhiraj"), this.datePipe.transform(date, 'yyyy-MM-ddTHH:mm'));
+  //   return this.datePipe.transform(date, 'yyyy-MM-ddTHH:mm');
+  // }
+  // saveChanges(){
+
+  // }
+  // cancelEdit(){
+
+  // }
 }

@@ -157,23 +157,271 @@
    
   </div>
   <div class="modal-body">
-    <!-- <div>
-      Action:
-      <pre>{{ modalData?.action }}</pre>
-    </div> -->
     <div style="margin-left: 5px;">
       Event Name : {{eventtitle}} <br>
-     <!-- <span style="font-size: 10px;"> {{eventstart}}</span> -->
-      <!-- <pre>{{ modalData?.event | json }}</pre> -->
+      <div *ngIf="editingEvent">
+        <h4>Edit Event</h4>
+        <form (ngSubmit)="saveChanges()">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Starts at {{editingEvent.start}}</th>
+                <th>Ends at {{editingEvent.end}}</th>
+                <th>Remove</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="title"
+                    [(ngModel)]="editingEvent.title"
+                    (keyup)="refresh.next()"
+                    name="title"
+                    required
+                  />
+                </td>
+                <td>
+                  <input
+                  class="form-control"
+                  type="date"
+                  [value]="editingEvent.start"
+                  mwlFlatpickr
+                  [(ngModel)]="editingEvent.start"
+                  (ngModelChange)="refresh.next()"
+                  [altInput]="true"
+                  [convertModelValue]="true"
+                  [enableTime]="true"
+                  dateFormat="Y-m-dTH:i"
+                  altFormat="F j, Y H:i"
+                  placeholder=""
+                />
+                </td>
+                <td>
+                  <input
+                    class="form-control"
+                    type="text"
+                    mwlFlatpickr
+                    [(ngModel)]="editingEvent.end"
+                    (ngModelChange)="refresh.next()"
+                    [altInput]="true"
+                    [convertModelValue]="true"
+                    [enableTime]="true"
+                    dateFormat="Y-m-dTH:i"
+                    altFormat="F j, Y H:i"
+                    placeholder="Not set"
+                  />
+                </td>
+              </tr>  
+            </table>
+          <button type="submit" class="btn btn-primary">Save changes</button>
+          <button type="button" class="btn btn-secondary" (click)="cancelEdit()">Cancel</button>
+        </form>
+      </div>
     </div>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-outline-primary m-2" (click)="close()" style="padding: 1px 5px;">
       OK
     </button>
-    <!-- <div style="font-size: 12px;">
-      {{ modalData?.action }}
-    </div> -->
   </div>
  </div>
 </ng-template>
+
+
+
+
+<!-- ---------------------------------------  -->
+
+
+<!-- new event form and editable  -->
+<!-- <div *ngIf="editingEvent">
+  <h4>Edit Event</h4>
+  <form (ngSubmit)="saveChanges()">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Primary color </th>
+          <th>Secondary + text color</th>
+          <th>Starts at {{editingEvent.start}}</th>
+          <th>Ends at {{editingEvent.end}}</th>
+          <th>Remove</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              id="title"
+              [(ngModel)]="editingEvent.title"
+              (keyup)="refresh.next()"
+              name="title"
+              required
+            />
+          </td>
+          <td>
+            <input
+            class="form-control"
+            type="text"
+            mwlFlatpickr
+            [(ngModel)]="editingEvent.start"
+            (ngModelChange)="refresh.next()"
+            [altInput]="true"
+            [convertModelValue]="true"
+            [enableTime]="true"
+            dateFormat="Y-m-dTH:i"
+            altFormat="F j, Y H:i"
+            placeholder="editingEvent.start"
+          />
+          </td>
+          <td>
+            <input
+              class="form-control"
+              type="text"
+              mwlFlatpickr
+              [(ngModel)]="editingEvent.end"
+              (ngModelChange)="refresh.next()"
+              [altInput]="true"
+              [convertModelValue]="true"
+              [enableTime]="true"
+              dateFormat="Y-m-dTH:i"
+              altFormat="F j, Y H:i"
+              placeholder="Not set"
+            />
+          </td>
+        </tr>  
+        
+      </table>
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="editingEvent.title"
+      />
+    </div>
+   <div class="form-group">
+      <label for="start">Start Date</label>
+      <input
+        class="form-control"
+        placeholder="yyyy-mm-dd"
+        name="start"
+        [(ngModel)]="editingEvent.start"
+        ngbDatepicker
+        #start="ngbDatepicker"
+      />
+      <button class="btn btn-outline-secondary calendar" (click)="start.toggle()" type="button">
+        <i class="fa fa-calendar"></i>
+      </button>
+    </div> -->
+    <!-- <div class="form-group">
+      <label for="end">End Date</label>
+      <input
+        class="form-control"
+        placeholder="yyyy-mm-dd"
+        name="end"
+        [(ngModel)]="editingEvent.end"
+        ngbDatepicker
+        #end="ngbDatepicker"
+      />
+      <button class="btn btn-outline-secondary calendar" (click)="end.toggle()" type="button">
+        <i class="fa fa-calendar"></i>
+      </button>
+    </div> -->
+    <!--<button type="submit" class="btn btn-primary">Save changes</button>
+    <button type="button" class="btn btn-secondary" (click)="cancelEdit()">Cancel</button>
+  </form>
+</div>
+ -->
+
+
+
+
+<!-- <div *ngIf="editingEvent" class="table-responsive">
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Primary color</th>
+        <th>Secondary + text color</th>
+        <th>Starts at</th>
+        <th>Ends at</th>
+        <th>Remove</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let event of events">
+        <td>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="event.title"
+            (keyup)="refresh.next()"
+          />
+        </td>
+        <td>
+          <input
+            type="color"
+            [(ngModel)]="event.color.primary"
+            (change)="refresh.next()"
+          />
+        </td>
+        <td>
+          <input
+            type="color"
+            [(ngModel)]="event.color.secondary"
+            (change)="refresh.next()"
+          />
+          <input
+            type="color"
+            [ngModel]="event.color.secondaryText ?? '#1e90ff'"
+            (ngModelChange)="event.color.secondaryText = $event"
+            (change)="refresh.next()"
+          />
+        </td>
+        <td>
+          <input
+            class="form-control"
+            type="text"
+            mwlFlatpickr
+            [(ngModel)]="event.start"
+            (ngModelChange)="refresh.next()"
+            [altInput]="true"
+            [convertModelValue]="true"
+            [enableTime]="true"
+            dateFormat="Y-m-dTH:i"
+            altFormat="F j, Y H:i"
+            placeholder="Not set"
+          />
+        </td>
+        <td>
+          <input
+            class="form-control"
+            type="text"
+            mwlFlatpickr
+            [(ngModel)]="event.end"
+            (ngModelChange)="refresh.next()"
+            [altInput]="true"
+            [convertModelValue]="true"
+            [enableTime]="true"
+            dateFormat="Y-m-dTH:i"
+            altFormat="F j, Y H:i"
+            placeholder="Not set"
+          />
+        </td>
+        <td>
+          <button class="btn btn-danger" (click)="deleteEvent(event)">
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div> -->

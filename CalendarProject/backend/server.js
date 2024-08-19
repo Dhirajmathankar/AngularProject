@@ -57,7 +57,8 @@ MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
 		},
 		{
 			$set: {
-				"taskList.$.Due Date": updates.update['Due Date']
+				"taskList.$.Due Date": updates.update['Due Date'],
+				"taskList.$.End Date": updates.update['End Date']
 			}
 		}
 	);
