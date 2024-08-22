@@ -1,5 +1,5 @@
-<!-- add container Class  -->
-<div class="draggable-container" 
+
+<!-- <div class="draggable-container" 
 (mousedown)="onMouseDown($event)" 
 (mouseup)="onMouseUp($event)" 
 (mousemove)="onMouseMove($event)" style="position: fixed; z-index: 3 !important; margin-left: 10px; right: 10px; bottom: 10px;">
@@ -56,7 +56,85 @@
 				<i class="fa-solid fa-volume-high m-1" *ngIf="runingAlarmButtonIcon" style="cursor: pointer;"></i>
 
 			</div>
-			<!-- <button (click)="startCountdown()" style="margin-top: 10px;">Start 30-minute Timer</button> -->
+		</div>
+	</div>
+</div> -->
+
+
+<div class="draggable-container" 
+(mousedown)="onMouseDown($event)" 
+(mouseup)="onMouseUp($event)" 
+(mousemove)="onMouseMove($event)" style="position: fixed; z-index: 5 !important; margin-left: 10px; right: 10px; bottom: 10px;">
+	<div class="alarmCont">
+		<div class="control" style="margin: 0px; padding: 0px;">
+			<div class="clock" style="margin-top: 20px;">
+				<div class="time">{{countdownHours?countdownHours:'00'}}:{{ countdownMinutes ? countdownMinutes : '00'}}:{{ countdownSeconds ? countdownSeconds
+					: '00'}}</div>
+					
+			</div>
+			<div style="margin-left:5px;">
+				<div style="color: white; display: flex; align-items: center; margin-top: -18px; padding: 10px;">
+					<i class="fa-solid fa-caret-left m-1" *ngIf="previousTaskButton"
+						style="color: #0481e6; cursor: pointer;" (click)="previousTask()"></i>
+					<div
+						style="margin: 0px 5px; padding: 0px ; flex: 1; overflow-x: auto; white-space: nowrap; scrollbar-width: none; -ms-overflow-style: none; font-size: 13px;">
+						{{Task ? Task : 'Project Task Name . '}} | {{projectName ? projectName : 'Your Project Name'}}
+					</div>
+					<i class="fa-solid fa-caret-right m-1" *ngIf="nextTaskButton"
+						style="color: #0481e6; cursor: pointer;" (click)="nextTast()"></i>
+					<i class="fa-solid fa-repeat m-1" style="color: #0481e6; font-size: 13px; cursor: pointer;     margin-left: 5px;" (click)="reloadTask()"></i>
+				</div>
+
+				<div style="color: white; margin:-10px 0px 0px 109px; font-size: 10px;">
+					<div></div>
+
+					<div style="display: flex;">
+						<div style="flex: 1;">
+							<p style="margin: 0px;">{{TaskCreator? TaskCreator : 'Task Creator'}}
+							</p>
+							<p style="margin: 0px; width: 80px;">{{DueDate ? DueDate : 'Due Date'}}</p>
+						</div>
+						<div style="flex: 1;">
+							<div *ngIf="!startTimeClockandCheckinfo">
+								<div>{{CreatedAt ? CreatedAt : 'Start Time'}}</div>
+							<div style="font-size: 15px;">{{StartTimeClock ? StartTimeClock : '00:00'}}</div>
+							</div>
+							<div  *ngIf="startTimeClockandCheckinfo" >
+								<i class="fa-solid fa-caret-right m-1" *ngIf="previousTaskButton"
+								style="cursor: pointer; border-radius: 50px; font-size: 20px;
+    margin-left: 16px;" (click)="startTimeClockandCheck()"></i> 
+								<div>Start Time</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div *ngIf="countdownMessage" style="color: white; font-size: 12px;">{{ countdownMessage }}</div>
+				<div *ngIf="showBreakTimeInput" style="color: white; margin: 0px 0; font-size: 12px;">
+					<label for="breakTime"  >{{DoneTaskInfo}}</label>
+					<input id="breakTime" type="number" *ngIf="showBreakTimeInputsms"    (input)="onBreakTimeChange($event)"  min="1"  style="width: 30px;font-size: 8px; margin-left: 5px;" >
+						<i class="fa-regular fa-square-check " *ngIf="showBreakTimeInputsms"   (click)="CompleteAndSetNextTask()" style="color: #0481e6;cursor: pointer; font-size: 14px; position: fixed; margin-left: 3px;"></i>
+				</div>
+
+				<div style="color: #0481e6 ; position: relative;bottom: 7px; left: -7; margin-top: 3px;">
+					<i class="fa-solid fa-forward m-2" *ngIf="skipTaskvisiblity" style="cursor: pointer;     margin: 5px;" title="Skip Task" (click)="skipTask()"></i>
+					<i class="fa-regular fa-square-check m-1" *ngIf="CompleteTaskvisiblity" style="cursor: pointer;     margin: 5px;" title="Complete Task" (click)="CompleteTask()"></i>
+
+					<i class="fa-solid fa-clock-rotate-left" style="cursor: pointer;     margin: 5px;     font-size: 13px;" title="Hold Task" ><sup class="m-1">{{totalRemeningTask}}</sup></i>
+
+					<i class="fa-solid fa-stopwatch m-1" style="cursor: pointer;     margin: 5px;    font-size: 13px;" title="Completed Task">
+						<sup class="m-1">{{totalCompletedTask}}</sup>
+					</i>
+					<i class="fa-solid fa-calendar-day " style="cursor: pointer;     margin: 5px;     font-size: 13px;" title="Remening Task">
+						<sup class="m-1">{{totalTask}}</sup>
+					</i>
+					<i class="fa-solid fa-volume-xmark m-1 " *ngIf="unmeuteButtonIcon" style="cursor: pointer;     margin: 5px;"
+						(click)="unmeuteButton()"></i>
+					<i class="fa-solid fa-headphones-simple m-1" *ngIf="meuteButtonIcon" style="cursor: pointer;    margin: 5px;"
+						(click)="meuteButton()"></i>
+					<i class="fa-solid fa-volume-high m-1" *ngIf="runingAlarmButtonIcon" style="cursor: pointer;    margin: 5px;"></i>
+
+				</div>
+			</div>
 		</div>
 	</div>
 </div>

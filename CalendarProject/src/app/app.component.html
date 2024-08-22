@@ -158,17 +158,19 @@
   </div>
   <div class="modal-body">
     <div style="margin-left: 5px;">
-      Event Name : {{eventtitle}} <br>
+      <div *ngIf="!editingEvent">
+        Event Name : {{eventtitle}} 
+      </div>
       <div *ngIf="editingEvent">
-        <h4>Edit Event</h4>
+        <h4>Event</h4>
         <form (ngSubmit)="saveChanges()">
           <table class="table table-bordered">
             <thead>
               <tr>
                 <th>Title</th>
-                <th>Starts at {{editingEvent.start}}</th>
-                <th>Ends at {{editingEvent.end}}</th>
-                <th>Remove</th>
+                <th>Starts at</th>
+                <th>Ends at</th>
+                <th>Save</th>
               </tr>
             </thead>
             <tbody>
@@ -187,7 +189,7 @@
                 <td>
                   <input
                   class="form-control"
-                  type="date"
+                  type="text"
                   [value]="editingEvent.start"
                   mwlFlatpickr
                   [(ngModel)]="editingEvent.start"
@@ -195,8 +197,9 @@
                   [altInput]="true"
                   [convertModelValue]="true"
                   [enableTime]="true"
-                  dateFormat="Y-m-dTH:i"
-                  altFormat="F j, Y H:i"
+                  [dateFormat]="'D M d Y H:i:S K'"
+                  [altFormat]="'D M d Y H:i:S K'"
+                  name="startDate"
                   placeholder=""
                 />
                 </td>
@@ -205,28 +208,34 @@
                     class="form-control"
                     type="text"
                     mwlFlatpickr
+                    [value]="editingEvent.end"
                     [(ngModel)]="editingEvent.end"
                     (ngModelChange)="refresh.next()"
                     [altInput]="true"
                     [convertModelValue]="true"
-                    [enableTime]="true"
-                    dateFormat="Y-m-dTH:i"
-                    altFormat="F j, Y H:i"
+                    [enableTime]="true"  
+                    [dateFormat]="'D M d Y H:i:S K'"
+                    [altFormat]="'D M d Y H:i:S K'"
+                    name="endDate"
                     placeholder="Not set"
                   />
                 </td>
+                <td>
+                  <button type="submit" class="btn btn-primary p-1">{{infoOfChanges}}</button>
+                </td>
               </tr>  
             </table>
-          <button type="submit" class="btn btn-primary">Save changes</button>
-          <button type="button" class="btn btn-secondary" (click)="cancelEdit()">Cancel</button>
+          
+          <!-- <button type="button" class="btn btn-secondary" (click)="cancelEdit()">Cancel</button> -->
         </form>
       </div>
     </div>
   </div>
   <div class="modal-footer">
+    <!-- <button type="submit" class="btn btn-primary">Save changes</button>-->
     <button type="button" class="btn btn-outline-primary m-2" (click)="close()" style="padding: 1px 5px;">
       OK
-    </button>
+    </button> 
   </div>
  </div>
 </ng-template>

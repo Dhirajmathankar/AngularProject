@@ -133,8 +133,8 @@ export class AppComponent implements OnInit {
       this.TodayTaskArray = []
       data.forEach((item: any) => {
         const eventsFromItem = item.taskList.map((event: any) => {
-          const eventStart =  startOfDay(new Date(event["Due Date"]));
-          let eventEnd = endOfDay(new Date(event["End Date"]));
+          const eventStart =  new Date(event["Due Date"]);
+          let eventEnd = new Date(event["End Date"]);
           // console.log(eventStart, "     ", eventEnd)
           const eventObject = {
             id: [item._id, event.eventId],
@@ -157,7 +157,7 @@ export class AppComponent implements OnInit {
         this.events = this.events.concat(eventsFromItem);
       });
       if (this.childComponent) {
-        this.childComponent.getAllTodayEventArray(this.TodayTaskArray); 
+        // this.childComponent.getAllTodayEventArray(this.TodayTaskArray); 
       
       }
       //  console.log("Today's Tasks Array:", this.TodayTaskArray);
@@ -230,7 +230,7 @@ export class AppComponent implements OnInit {
   
   callChildMethod(duration: number, message: string , botId : any): void {
     if (this.childComponent) {
-      this.childComponent.startCountdown(duration, message, botId);
+      // this.childComponent.startCountdown(duration, message, botId);
     }
   }
 
@@ -342,9 +342,9 @@ export class AppComponent implements OnInit {
   editingEvent: CalendarEvent | null = null;
 
 
-
+infoOfChanges : string = 'Save'
   openEditForm(event: CalendarEvent,  newStart : any,  newEnd:any ): void {
-
+    this.infoOfChanges = 'Save';
     this.editingEvent = { ...event ,  start: new Date( newStart), end: new Date(newEnd) }; // Clone the event 
   }
   
@@ -352,16 +352,16 @@ export class AppComponent implements OnInit {
     this.editingEvent = null;
   }
 
+  
   saveChanges() {
-    console.log("Hello console", this.editingEvent)
     if (this.editingEvent) {
       // this.events = await Promise.all(
-        this.events.map(async (event) => {
-          if (event === this.editingEvent) {
+        // this.events.map(async (event) => {
+          // if (event === this.editingEvent) {
             const projectId: any = this.editingEvent.id;
             
             try {
-              console.log(event, `${projectId[0]}`, `${projectId[1]}`, {
+              console.log( `${projectId[0]}`, `${projectId[1]}`, {
                 "Due Date": this.editingEvent.start,
                 "End Date": this.editingEvent.end
               });
@@ -370,19 +370,24 @@ export class AppComponent implements OnInit {
              this.eventService.updateEvent(`${projectId[0]}`, `${projectId[1]}`, {
                 "Due Date": this.editingEvent.start,
                 "End Date": this.editingEvent.end
-              }); // Convert Observable to Promise for async/await
-  console.log("jala apla ta ")
-              return this.editingEvent;
+              }).subscribe(); // Convert Observable to Promise for async/await
+              this.infoOfChanges = 'Done'
+              // return this.editingEvent;
             } catch (error) {
               console.error("Failed to update event:", error);
               console.log("nahi jala jala apla ta ")
               // Handle the error (e.g., show a notification to the user)
             }
+            this.modal.dismissAll()
+            this.ngOnInit() 
+          }else{
+            
           }
-          return event;
-        })
+          // return event;
+        // })
       // );
-    }
+    // }
+    this.ngOnInit()
   }
 
   // formatDateForchange(date: Date): any {
