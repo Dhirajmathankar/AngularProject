@@ -28,6 +28,28 @@ MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
 
 
 
+  
+
+  app.get("/checkPromodora", (req, res) => {
+	let value = localStorage.getItem("promodorastatus")
+	res.send({"status":value})
+  })
+
+  app.get("/runPromodora", (req, res) => {
+	const exePath = 'E:\\DeskTopProject\\PromodoraDesktop\\dist\\MyApp-win32-x64\\MyApp.exe';
+  localStorage.setItem("promodorastatus", true)
+	const child = exec(`"${exePath}"`, (error, stdout, stderr) => {
+	  if (error) {
+		console.error(`Error: ${error}`);
+		return res.send({ "status": false });
+	  }
+	  res.send({ "status": true });
+	  localStorage.setItem("promodorastatus", false)
+	});
+	// res.send({ "status": true });
+  });
+  
+
  
   app.get("/calendarData/", async (req, res) => {
 	try {
