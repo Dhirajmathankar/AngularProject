@@ -32,4 +32,9 @@ export class EventService {
     // this.body['projectId'] = projectId;
     return this.http.patch(`${this.apiUrl}${projectId}`, this.body);
   }
+
+  startPromodora(): Observable<any> {
+    return this.http.get(`http://localhost:3000/runPromodora`);
+  }
+
 }

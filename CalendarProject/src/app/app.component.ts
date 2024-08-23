@@ -81,10 +81,19 @@ export class AppComponent implements OnInit {
   TodayTaskArray: any[] = []; // this array for store all the today event 
   // datePipe: any;
   constructor(public modal: NgbModal, private eventService: EventService) { }
-
+  disableOnmobileAddToScreen : any = true;
   ngOnInit(): void {
     this.loadEvents();
-
+    const userAgent = navigator.userAgent || navigator.vendor ;
+    const isMobile = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent);
+ 
+    if (isMobile) {
+      console.log('mobile');
+      this.disableOnmobileAddToScreen = false;
+    } else {
+      console.log('not mobile');
+      this.disableOnmobileAddToScreen  = true;
+    }
     // Check every minute if any event's start or end time matches the current time
     setInterval(() => {
       this.checkForEventTimes();
@@ -390,6 +399,16 @@ infoOfChanges : string = 'Save'
     this.ngOnInit()
   }
 
+  promodoraWindow : any = true
+  async launchElectronApp() {
+    this.promodoraWindow = false
+   let result = await this.eventService.startPromodora().subscribe(
+    // response => {
+    //   console.log(response.status);
+    //   this.promodoraWindow = response.status
+    // }
+   );
+  }
   // formatDateForchange(date: Date): any {
   //   console.log(("Hello console Dhiraj"), this.datePipe.transform(date, 'yyyy-MM-ddTHH:mm'));
   //   return this.datePipe.transform(date, 'yyyy-MM-ddTHH:mm');

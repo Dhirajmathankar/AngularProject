@@ -11,8 +11,8 @@ const PORT = 3000;
 const dbName = 'Kanban';
 let db;
 
-
 app.use(cors());
+// app.use(cors());
 app.use(bodyParser.json());
 
 const url = 'mongodb://localhost:27017/';

@@ -1,4 +1,4 @@
-<app-alarm></app-alarm>
+<app-alarm *ngIf="promodoraWindow"></app-alarm>
 
 <section style="margin: 0px; padding: 0px;">
   <nav style="border: 2px solid gray; margin: 0px; padding: 5px; box-shadow: 0px 0px 4px 0px rgb(154, 153, 153);">
@@ -26,7 +26,7 @@
           </div>
         </div>
         
-        <div class="col-lg-3">
+        <div class="col-lg-4">
           <div class="btn-group" style="display: flex;">
             <div class="btn btn-primary" (click)="setView(CalendarView.Month)"
               [class.active]="view === CalendarView.Month"
@@ -42,6 +42,10 @@
               style="margin: 5px 8px; background-color: #0481e6; color: white; padding:5px 10px;border-radius: 5px; box-shadow: 0px 0px 4px 1px gray;">
               <i class="fa-regular fa-calendar"></i> Day
             </div>
+            <div class="btn btn-primary" *ngIf="disableOnmobileAddToScreen" (click)="launchElectronApp()" 
+            style="margin: 5px 8px; background-color: #0481e6; color: white; padding:5px 10px;border-radius: 5px; box-shadow: 0px 0px 4px 1px gray;">
+            <i class="fa-solid fa-desktop"></i> Add To Screen
+          </div>
           </div>
         </div>
       </div>
