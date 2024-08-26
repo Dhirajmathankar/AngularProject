@@ -131,7 +131,7 @@
 						(click)="unmeuteButton()"></i>
 					<i class="fa-solid fa-headphones-simple m-1" *ngIf="meuteButtonIcon" style="cursor: pointer;    margin: 5px;"
 						(click)="meuteButton()"></i>
-					<i class="fa-solid fa-volume-high m-1" *ngIf="runingAlarmButtonIcon" style="cursor: pointer;    margin: 5px;"></i>
+					<i class="fa-solid fa-volume-high m-1" *ngIf="runingAlarmButtonIcon" style="cursor: pointer;    margin: 5px;" (click)="stopaudio()"></i>
 
 				</div>
 			</div>

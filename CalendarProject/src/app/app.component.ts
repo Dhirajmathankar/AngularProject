@@ -403,10 +403,10 @@ infoOfChanges : string = 'Save'
   async launchElectronApp() {
     this.promodoraWindow = false
    let result = await this.eventService.startPromodora().subscribe(
-    // response => {
-    //   console.log(response.status);
-    //   this.promodoraWindow = response.status
-    // }
+    response => {
+      console.log(response.status);
+      this.promodoraWindow = response.status
+    }
    );
   }
   // formatDateForchange(date: Date): any {

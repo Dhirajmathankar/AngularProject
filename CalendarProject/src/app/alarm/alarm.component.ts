@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { format, getHours, getMinutes , startOfDay, endOfDay, isSameDay} from 'date-fns';
+import { format, getHours, getMinutes, startOfDay, endOfDay, isSameDay } from 'date-fns';
 import { EventService } from '../event.service';
 
 
@@ -17,31 +17,31 @@ interface Duration {
   styleUrls: ['./alarm.component.css']
 })
 export class AlarmComponent implements OnInit {
-//   hours: string | undefined;
-//   minutes: string | undefined;
-//   seconds: string | undefined;
-//   blnAmPm: string | undefined;
-//   dayOfWeek: string | undefined;
-//   ddMMoo: string | undefined;
-//   weeks: any[] = [];
-//   resultObjectClockInfo : any | undefined ;
-//   StartTimeClock : any | undefined;
+  //   hours: string | undefined;
+  //   minutes: string | undefined;
+  //   seconds: string | undefined;
+  //   blnAmPm: string | undefined;
+  //   dayOfWeek: string | undefined;
+  //   ddMMoo: string | undefined;
+  //   weeks: any[] = [];
+  //   resultObjectClockInfo : any | undefined ;
+  //   StartTimeClock : any | undefined;
 
-//   countdownMinutes: string | undefined;
-//   countdownSeconds: string | undefined;
-//   countdownMessage: string | undefined;
-//   countdownInterval: any;
+  //   countdownMinutes: string | undefined;
+  //   countdownSeconds: string | undefined;
+  //   countdownMessage: string | undefined;
+  //   countdownInterval: any;
 
-//   days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-//   suffixes = ["th", "st", "nd", "rd"];
+  //   days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+  //   suffixes = ["th", "st", "nd", "rd"];
 
-//   constructor() { }
+  //   constructor() { }
 
-//   ngOnInit(): void {
-//     this.updateTime();
-//     setInterval(() => this.updateTime(), 1000);
-//     this.getMonthWeeks();
-//   }
+  //   ngOnInit(): void {
+  //     this.updateTime();
+  //     setInterval(() => this.updateTime(), 1000);
+  //     this.getMonthWeeks();
+  //   }
 
 
   // isDragging = false;
@@ -78,151 +78,151 @@ export class AlarmComponent implements OnInit {
     }
   }
 
-//   updateTime() {
-//     const now = new Date();
-//     let hours = now.getHours();
-//     const minutes = now.getMinutes();
-//     const seconds = now.getSeconds();
+  //   updateTime() {
+  //     const now = new Date();
+  //     let hours = now.getHours();
+  //     const minutes = now.getMinutes();
+  //     const seconds = now.getSeconds();
 
-//     this.blnAmPm = 'am';
-//     if (hours >= 12) {
-//       hours -= 12;
-//       this.blnAmPm = 'pm';
-//     }
+  //     this.blnAmPm = 'am';
+  //     if (hours >= 12) {
+  //       hours -= 12;
+  //       this.blnAmPm = 'pm';
+  //     }
 
-//     this.hours = hours < 10 ? '0' + hours : hours.toString();
-//     this.minutes = minutes < 10 ? '0' + minutes : minutes.toString();
-//     this.seconds = seconds < 10 ? '0' + seconds : seconds.toString();
+  //     this.hours = hours < 10 ? '0' + hours : hours.toString();
+  //     this.minutes = minutes < 10 ? '0' + minutes : minutes.toString();
+  //     this.seconds = seconds < 10 ? '0' + seconds : seconds.toString();
 
-//     const dayOfMonth = now.getDate();
-//     const suffix = this.suffixes[(dayOfMonth < 30) ? (dayOfMonth % 10) : 0];
-//     this.ddMMoo = `${now.toLocaleString('default', { month: 'long' })} ${dayOfMonth}${suffix}, ${now.getFullYear()}`;
-//     this.dayOfWeek = now.toLocaleString('default', { weekday: 'long' });
-//   }
+  //     const dayOfMonth = now.getDate();
+  //     const suffix = this.suffixes[(dayOfMonth < 30) ? (dayOfMonth % 10) : 0];
+  //     this.ddMMoo = `${now.toLocaleString('default', { month: 'long' })} ${dayOfMonth}${suffix}, ${now.getFullYear()}`;
+  //     this.dayOfWeek = now.toLocaleString('default', { weekday: 'long' });
+  //   }
 
-//   getMonthWeeks() {
-//     const dtmDate = new Date();
-//     const year = dtmDate.getFullYear();
-//     const month = dtmDate.getMonth();
-//     const lastDayOfMonth = new Date(year, month + 1, 0).getDate();
+  //   getMonthWeeks() {
+  //     const dtmDate = new Date();
+  //     const year = dtmDate.getFullYear();
+  //     const month = dtmDate.getMonth();
+  //     const lastDayOfMonth = new Date(year, month + 1, 0).getDate();
 
-//     let week = [];
-//     let weekNumber = 1;
+  //     let week = [];
+  //     let weekNumber = 1;
 
-//     for (let day = 1; day <= lastDayOfMonth; day++) {
-//       const date = new Date(year, month, day);
-//       const dayOfWeek = date.getDay();
+  //     for (let day = 1; day <= lastDayOfMonth; day++) {
+  //       const date = new Date(year, month, day);
+  //       const dayOfWeek = date.getDay();
 
-//       if (dayOfWeek === 0 && day !== 1) {
-//         this.weeks.push(week);
-//         week = [];
-//         weekNumber++;
-//       }
+  //       if (dayOfWeek === 0 && day !== 1) {
+  //         this.weeks.push(week);
+  //         week = [];
+  //         weekNumber++;
+  //       }
 
-//       week.push({
-//         week: weekNumber,
-//         day,
-//         appointment: this.getAppointment(day),
-//         currDay: day === dtmDate.getDate()
-//       });
-//     }
+  //       week.push({
+  //         week: weekNumber,
+  //         day,
+  //         appointment: this.getAppointment(day),
+  //         currDay: day === dtmDate.getDate()
+  //       });
+  //     }
 
-//     if (week.length) {
-//       this.weeks.push(week);
-//     }
-//   }
+  //     if (week.length) {
+  //       this.weeks.push(week);
+  //     }
+  //   }
 
-//   getAppointment(day: number) {
-//     switch (day) {
-//       case 2:
-//         return 'Buy gift for mother';
-//       case 12:
-//         return 'Meeting with Feriha Yilmaz about app';
-//       case 26:
-//         return "Hurlin's Birthday";
-//       default:
-//         return '';
-//     }
-//   }
+  //   getAppointment(day: number) {
+  //     switch (day) {
+  //       case 2:
+  //         return 'Buy gift for mother';
+  //       case 12:
+  //         return 'Meeting with Feriha Yilmaz about app';
+  //       case 26:
+  //         return "Hurlin's Birthday";
+  //       default:
+  //         return '';
+  //     }
+  //   }
 
 
-//   parseStringToKeyValue(str: string): { keyValueObject: Record<string, string>, createdAtTime: string } {
-//     const keyValueObject: Record<string, string> = {};
-//     let createdAtTime = '';
-//     const entries = str.split(' , ');
-  
-//     entries.forEach(entry => {
-//       const [key, value] = entry.split('-').map(part => part.trim());
-//       if (key && value) {
-//         if (key === 'Due Date') {
-//           const date = new Date(value);
-//           const formattedDate = format(date, 'd MMMM yyyy, hh:mm a');
-//           keyValueObject[key] = formattedDate;
-//         } else if (key === 'Created At') {
-//           const date = new Date(value);
-//           const formattedDate = format(date, 'd MMMM yyyy');
-//           createdAtTime = format(date, 'hh:mm a');
-//           keyValueObject[key] = formattedDate;
-//         } else {
-//           keyValueObject[key] = value;
-//         }
-//       }
-//     });
-  
-//     return { keyValueObject, createdAtTime };
-//   }
-  
-  
-  
-  
-//    Task : string | undefined; 
-//    projectName : string | undefined ;
-//    TaskCreator : string | undefined ;
-//    DueDate : string | undefined ;
-//    CreatedAt : string | undefined ;
-//    botId : any | undefined = ["66865ffe40d572d41b61a0db", "665d69fd110d2662a7e3e281"];
-//    previousTaskButton : boolean = true;
-//    nextTaskButton : boolean = true;
-//    unmeuteButtonIcon : boolean | undefined = false;
-//    meuteButtonIcon : boolean | undefined  = true;
-//    runingAlarmButtonIcon : boolean | undefined = false ;
- 
-//   startCountdown(duration: number, message: string, botId :any): void{
-// this.botId = botId ;
-// localStorage.setItem('botIds', JSON.stringify(this.botId));
-//     // console.log("Hello console", botId )
-//     this.countdownMessage = 'Time starts now!';
-//     const result = this.parseStringToKeyValue(message);
-//     this.Task  = result.keyValueObject['Task'];
-//     this.projectName = result.keyValueObject['projectName'];
-//     this.TaskCreator = result.keyValueObject['Task Creator'] ? result.keyValueObject['Task Creator']  : result.keyValueObject['Creator'] ;
-//     this.DueDate = result.keyValueObject['Due Date']
-//     this.CreatedAt = result.keyValueObject['Created At']
-//     this.resultObjectClockInfo = result.keyValueObject;
-//     this.StartTimeClock = result.createdAtTime;
-//     // console.log(this.resultObjectClockInfo)
-//     if(this.meuteButtonIcon){
-//       this.alarmTop();
-//     }
-//     let totalSeconds = duration * 60; // 30 minutes in seconds
+  //   parseStringToKeyValue(str: string): { keyValueObject: Record<string, string>, createdAtTime: string } {
+  //     const keyValueObject: Record<string, string> = {};
+  //     let createdAtTime = '';
+  //     const entries = str.split(' , ');
 
-//     this.countdownInterval = setInterval(() => {
-//       const minutes = Math.floor(totalSeconds / 60);
-//       const seconds = totalSeconds % 60;
+  //     entries.forEach(entry => {
+  //       const [key, value] = entry.split('-').map(part => part.trim());
+  //       if (key && value) {
+  //         if (key === 'Due Date') {
+  //           const date = new Date(value);
+  //           const formattedDate = format(date, 'd MMMM yyyy, hh:mm a');
+  //           keyValueObject[key] = formattedDate;
+  //         } else if (key === 'Created At') {
+  //           const date = new Date(value);
+  //           const formattedDate = format(date, 'd MMMM yyyy');
+  //           createdAtTime = format(date, 'hh:mm a');
+  //           keyValueObject[key] = formattedDate;
+  //         } else {
+  //           keyValueObject[key] = value;
+  //         }
+  //       }
+  //     });
 
-//       this.countdownMinutes = minutes < 10 ? '0' + minutes : minutes.toString();
-//       this.countdownSeconds = seconds < 10 ? '0' + seconds : seconds.toString();
+  //     return { keyValueObject, createdAtTime };
+  //   }
 
-//       if (totalSeconds <= 0) {
-//         clearInterval(this.countdownInterval);
-//         this.countdownMessage = 'Your time is up!';
-//       } else {
-//         totalSeconds--;
-//       }
-//     }, 1000);
-//   }
 
- 
+
+
+  //    Task : string | undefined; 
+  //    projectName : string | undefined ;
+  //    TaskCreator : string | undefined ;
+  //    DueDate : string | undefined ;
+  //    CreatedAt : string | undefined ;
+  //    botId : any | undefined = ["66865ffe40d572d41b61a0db", "665d69fd110d2662a7e3e281"];
+  //    previousTaskButton : boolean = true;
+  //    nextTaskButton : boolean = true;
+  //    unmeuteButtonIcon : boolean | undefined = false;
+  //    meuteButtonIcon : boolean | undefined  = true;
+  //    runingAlarmButtonIcon : boolean | undefined = false ;
+
+  //   startCountdown(duration: number, message: string, botId :any): void{
+  // this.botId = botId ;
+  // localStorage.setItem('botIds', JSON.stringify(this.botId));
+  //     // console.log("Hello console", botId )
+  //     this.countdownMessage = 'Time starts now!';
+  //     const result = this.parseStringToKeyValue(message);
+  //     this.Task  = result.keyValueObject['Task'];
+  //     this.projectName = result.keyValueObject['projectName'];
+  //     this.TaskCreator = result.keyValueObject['Task Creator'] ? result.keyValueObject['Task Creator']  : result.keyValueObject['Creator'] ;
+  //     this.DueDate = result.keyValueObject['Due Date']
+  //     this.CreatedAt = result.keyValueObject['Created At']
+  //     this.resultObjectClockInfo = result.keyValueObject;
+  //     this.StartTimeClock = result.createdAtTime;
+  //     // console.log(this.resultObjectClockInfo)
+  //     if(this.meuteButtonIcon){
+  //       this.alarmTop();
+  //     }
+  //     let totalSeconds = duration * 60; // 30 minutes in seconds
+
+  //     this.countdownInterval = setInterval(() => {
+  //       const minutes = Math.floor(totalSeconds / 60);
+  //       const seconds = totalSeconds % 60;
+
+  //       this.countdownMinutes = minutes < 10 ? '0' + minutes : minutes.toString();
+  //       this.countdownSeconds = seconds < 10 ? '0' + seconds : seconds.toString();
+
+  //       if (totalSeconds <= 0) {
+  //         clearInterval(this.countdownInterval);
+  //         this.countdownMessage = 'Your time is up!';
+  //       } else {
+  //         totalSeconds--;
+  //       }
+  //     }, 1000);
+  //   }
+
+
 
 
   // previousTask(){
@@ -249,7 +249,7 @@ export class AlarmComponent implements OnInit {
   //   this.nextTaskButton = true;
   // }else{
   //   this.previousTaskButton = false ;
-   
+
   // }
   //   // alert("previouse Task")
   // }
@@ -279,7 +279,7 @@ export class AlarmComponent implements OnInit {
   //   this.previousTaskButton = true;
   // }else {
   //   this.nextTaskButton = false;
- 
+
   // }
   // }
 
@@ -343,8 +343,8 @@ export class AlarmComponent implements OnInit {
 
 
 
- 
-   // hours: string | undefined;
+
+  // hours: string | undefined;
   // minutes: string | undefined;
   // seconds: string | undefined;
   // blnAmPm: string | undefined;
@@ -365,7 +365,7 @@ export class AlarmComponent implements OnInit {
   TaskCreator: string | undefined;
   DueDate: string | undefined;
   CreatedAt: string | undefined;
-  botId: any | undefined ;
+  botId: any | undefined;
   previousTaskButton: boolean = true;
   nextTaskButton: boolean = true;
   unmeuteButtonIcon: boolean | undefined = false;
@@ -386,14 +386,17 @@ export class AlarmComponent implements OnInit {
   totalRemeningTask: any = 0
   alertedStartEvents: Set<string> = new Set(); // Store alerted start event IDs
   alertedEndEvents: Set<string> = new Set();
-  CompleteTaskvisiblity : boolean = true;
-  skipTaskvisiblity : boolean = true
-  alarmAudio: HTMLAudioElement | null = null; 
+  CompleteTaskvisiblity: boolean = true;
+  skipTaskvisiblity: boolean = true
+  alarmAudio: HTMLAudioElement | null = null;
+  audiovariable: HTMLAudioElement | null = null;
   timeoutId: ReturnType<typeof setTimeout> | null = null;
   indicatore2: boolean = false;
-  
 
-  constructor(private eventService: EventService) { }
+
+  constructor(private eventService: EventService) {
+
+  }
 
   // getAllTodayEventArray(TodayTaskArray:any){
   //   this.TodayTaskArray = TodayTaskArray.sort((a:any , b:any) => a.start.getTime() - b.start.getTime());
@@ -411,6 +414,15 @@ export class AlarmComponent implements OnInit {
   intervalId: any;
 
   ngOnInit(): void {
+
+    try {
+      this.audiovariable = new Audio();
+      this.audiovariable.src = 'assets/audio/audio.wav';
+      this.audiovariable.load();
+    } catch (error) {
+      console.log(error)
+    }
+
     this.loadEvents();
   }
 
@@ -475,7 +487,7 @@ export class AlarmComponent implements OnInit {
   }
 
   // intervalId: any;
-  
+
   //   startTimeClockandCheck() {
   //     this.checkForEventTimes();
   //     this.startTimeClockandCheckinfo = false;
@@ -483,7 +495,7 @@ export class AlarmComponent implements OnInit {
   //       this.checkForEventTimes();
   //     }, 1000); // 1000 milliseconds = 1 second
   // }
- 
+
 
   infoShowFunction() {
     const now = new Date();
@@ -581,6 +593,45 @@ export class AlarmComponent implements OnInit {
   }
 
 
+  playAudio() {
+    try {
+      if (this.audiovariable) {
+        if (this.audiovariable.paused) {
+          this.unmeuteButtonIcon = false;
+          this.meuteButtonIcon = false;
+          this.runingAlarmButtonIcon = true;
+          this.audiovariable.play().catch((error: any) => console.error("Audio play error:", error));
+        }
+      }
+    } catch (error) {
+      console.log(error)
+    }
+
+  }
+
+  pauseAudio() {
+    try {
+      if (this.audiovariable) {
+        if (!this.audiovariable.paused) {
+          this.unmeuteButtonIcon = true;
+          this.meuteButtonIcon = false;
+          this.runingAlarmButtonIcon = false;
+          this.audiovariable.pause()
+        }
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  stopaudio() {
+    this.unmeuteButtonIcon = true;
+    this.meuteButtonIcon = false;
+    this.runingAlarmButtonIcon = false;
+    this.pauseAudio()
+  }
+
+
 
   checkForEventTimes(): void {
     // console.log("Local host Dhiraj Mathankar");
@@ -595,7 +646,9 @@ export class AlarmComponent implements OnInit {
       ongoingTaskEnd: -1,
       taskBreak: -1,
       ongoingTaskOuterIndex: -1,
-      ongoingTaskInnerIndex: -1
+      ongoingTaskInnerIndex: -1,
+      ongoingTaskstartIndex: -1,
+      ongoingTaskEndIndexAudio: -1
     };
 
     this.TodayTaskArray.forEach((outerTask: any, outerIndex: number) => {
@@ -611,23 +664,25 @@ export class AlarmComponent implements OnInit {
       // }
       if (now.getHours() === outerStart.getHours() && now.getMinutes() === outerStart.getMinutes()) {
         checkTaskPosition.ongoingTaskStart = 1;
+        checkTaskPosition.ongoingTaskstartIndex = outerIndex;
       }
 
       // 2. End task condition
       // else if (now.getTime() === outerEnd.getTime()) {
       //   checkTaskPosition.ongoingTaskEnd = 1
       // }
-      else if (now.getHours() === outerEnd.getHours() && now.getMinutes() === outerEnd.getMinutes()) {
+      else if (now.getTime() === outerEnd.getTime()) {
         checkTaskPosition.ongoingTaskEnd = 1;
+        checkTaskPosition.ongoingTaskEndIndexAudio = outerIndex;
       }
 
       // 3. Ongoing task condition
       else if (outerTaskTime) {
         checkTaskPosition.ongoingTaskOuter = 1
-        if(checkTaskPosition.ongoingTaskOuterIndex === -1){
+        if (checkTaskPosition.ongoingTaskOuterIndex === -1) {
           checkTaskPosition.ongoingTaskOuterIndex = outerIndex;
         }
-        
+
 
         // Loop through to find inner tasks
         this.TodayTaskArray.forEach((innerTask: any, innerIndex: number) => {
@@ -640,8 +695,8 @@ export class AlarmComponent implements OnInit {
               // console.log("Inner Task Detected within Outer Task");
               // Check if the inner task is completed before the outer task ends
               checkTaskPosition.ongoingTaskInner = 1;
-              
-              if(checkTaskPosition.ongoingTaskInnerIndex === -1){
+
+              if (checkTaskPosition.ongoingTaskInnerIndex === -1) {
                 checkTaskPosition.ongoingTaskInnerIndex = innerIndex;
               }
               if (now >= innerEnd) {
@@ -662,14 +717,26 @@ export class AlarmComponent implements OnInit {
     });
 
     //  console.log(checkTaskPosition )
-    console.log(checkTaskPosition)
+    // console.log(checkTaskPosition)
     let alarmIndicatorestart = false;
     let alarmIndicatorend = false;
     if (checkTaskPosition.ongoingTaskStart === 1) {
       console.log("Task Start")
+      if (this.meuteButtonIcon) {
+        this.playAudio()
+      }
+      let currentruningTaskIndex = checkTaskPosition.ongoingTaskstartIndex;
+      if (checkTaskPosition.ongoingTaskInnerIndex !== -1) {
+        currentruningTaskIndex = checkTaskPosition.ongoingTaskInnerIndex
+      } else if (checkTaskPosition.ongoingTaskOuterIndex !== -1) {
+        currentruningTaskIndex = checkTaskPosition.ongoingTaskOuterIndex
+      }
+      const RuningTime = this.calculateTimeDifference(this.TodayTaskArray[currentruningTaskIndex].end)
+      const task = this.TodayTaskArray[currentruningTaskIndex];
+      this.startCountdown(RuningTime, { titleSms: "Task Start Now.... ", eventTitle: task.title }, task.id);
     }
     else if (checkTaskPosition.ongoingTaskInner === 1) {
-      
+
       // if (this.TodayTaskArray[checkTaskPosition.ongoingTaskInnerIndex+1] ) {
       //   this.CompleteTaskvisiblity = true
       // }else{
@@ -679,41 +746,81 @@ export class AlarmComponent implements OnInit {
       // console.log("Inner Task Runing", this.TodayTaskArray[checkTaskPosition.ongoingTaskInnerIndex].start)
       const RuningTime = this.calculateTimeDifference(this.TodayTaskArray[checkTaskPosition.ongoingTaskInnerIndex].end)
       const task = this.TodayTaskArray[checkTaskPosition.ongoingTaskInnerIndex];
-      this.startCountdown(RuningTime, { titleSms: "Task ongoing... ", eventTitle: task.title }, task.id);
+      if (RuningTime.minutes <= 1) {
+        this.startCountdown(RuningTime, { titleSms:  `Task Will be End in ${RuningTime.seconds }Sec.... `, eventTitle: task.title }, task.id);
+        if (this.meuteButtonIcon) {
+          this.playAudio()
+        }
+      }else{
+        this.startCountdown(RuningTime, { titleSms: "Task ongoing.... ", eventTitle: task.title }, task.id);
+      }
       // console.log(this.calculateTimeDifference(this.TodayTaskArray[checkTaskPosition.ongoingTaskInnerIndex].end))
     }
     else if (checkTaskPosition.ongoingTaskOuter === 1) {
-      
+
       // if (this.TodayTaskArray[checkTaskPosition.ongoingTaskOuterIndex+1] && checkTaskPosition.ongoingTaskInner === -1) {
       //   this.CompleteTaskvisiblity = true
       // }else{
       //   // this.skipTaskvisiblity  = false
       //   this.CompleteTaskvisiblity = false
       // }
-     
+
       // console.log("Task ongoing", checkTaskPosition.ongoingTaskOuterIndex)
       const RuningTime = this.calculateTimeDifference(this.TodayTaskArray[checkTaskPosition.ongoingTaskOuterIndex].end)
       const task = this.TodayTaskArray[checkTaskPosition.ongoingTaskOuterIndex];
-      this.startCountdown(RuningTime, { titleSms: "Task ongoing.... ", eventTitle: task.title }, task.id);
+      if (RuningTime.minutes <= 1) {
+        this.startCountdown(RuningTime, { titleSms: `Task Will be End in ${RuningTime.seconds }Sec.... `, eventTitle: task.title }, task.id);
+        if (this.meuteButtonIcon) {
+          this.playAudio()
+        }
+       
+      }else{
+        this.startCountdown(RuningTime, { titleSms: "Task ongoing.... ", eventTitle: task.title }, task.id);
+      }
+     
       // console.log(this.calculateTimeDifference(this.TodayTaskArray[checkTaskPosition.ongoingTaskOuterIndex].end!))
     }
     else if (checkTaskPosition.ongoingTaskEnd === 1) {
       console.log("Task End")
+      // if (checkTaskPosition.ongoingTaskEndIndexAudio !== -1 && this.meuteButtonIcon) {
+      //   this.playAudio()
+      // }
+      // let currentruningTaskIndex = checkTaskPosition.ongoingTaskstartIndex;
+      // if (checkTaskPosition.ongoingTaskInnerIndex !== -1) {
+      //   currentruningTaskIndex = checkTaskPosition.ongoingTaskInnerIndex
+      // } else if (checkTaskPosition.ongoingTaskOuterIndex !== -1) {
+      //   currentruningTaskIndex = checkTaskPosition.ongoingTaskOuterIndex
+      // }
+      // const RuningTime = this.calculateTimeDifference(this.TodayTaskArray[currentruningTaskIndex].end)
+      // const task = this.TodayTaskArray[currentruningTaskIndex];
+
+      // this.startCountdown(RuningTime, { titleSms: "Task Will be End in 1min.... ", eventTitle: task.title }, task.id);
     }
     else if (checkTaskPosition.taskBreak === 1) {
-     
+
       const currentTime = new Date();
       const upcomingTask = this.TodayTaskArray.find((task: any) => new Date(task.start) > currentTime);
 
       if (upcomingTask) {
         this.CompleteTaskvisiblity = true
-        this.skipTaskvisiblity  = true
+        this.skipTaskvisiblity = true
         console.log(upcomingTask);
         const RuningTime = this.calculateTimeDifference(upcomingTask.start)
-        this.startCountdown(RuningTime, { titleSms: "Your UpComing Task... ", eventTitle: upcomingTask.title }, upcomingTask.id);
+        // this.startCountdown(RuningTime, { titleSms: "Your UpComing Task... ", eventTitle: upcomingTask.title }, upcomingTask.id);
+
+        if (RuningTime.minutes <= 1) {
+          this.startCountdown(RuningTime, { titleSms: `Task will start in ${RuningTime.seconds}Sec... `, eventTitle: upcomingTask.title }, upcomingTask.id);
+          if (this.meuteButtonIcon) {
+            this.playAudio()
+          }
+         
+        }else{
+          this.startCountdown(RuningTime, { titleSms: "Your UpComing Task... ", eventTitle: upcomingTask.title }, upcomingTask.id);
+        }
+
       } else {
         this.CompleteTaskvisiblity = false
-        this.skipTaskvisiblity  = false
+        this.skipTaskvisiblity = false
         const RuningTime = this.calculateTimeDifference(new Date())
         this.startCountdown(RuningTime, { titleSms: "Today All Task Ended... ", eventTitle: "" }, "");
       }
@@ -740,7 +847,7 @@ export class AlarmComponent implements OnInit {
     console.log(this.CreatedAt)
     this.resultObjectClockInfo = result.keyValueObject;
     this.StartTimeClock = result.createdAtTime;
-    this.countdownHours =duration.hours.toString();
+    this.countdownHours = duration.hours.toString();
     this.countdownMinutes = duration.minutes.toString()
     this.countdownSeconds = duration.seconds.toString()
   }
