@@ -1023,19 +1023,22 @@ export class AlarmComponent implements OnInit {
         const endTime = new Date(task.end);
         if (now >= startTime && now <= endTime && this.TodayTaskArray[index + 1] && ongoingIndex === -1) {
           ongoingIndex = index;
+          return;
         }
         else if (now <= startTime && this.TodayTaskArray[index] && upcomingIndex === -1) {
           upcomingIndex = index;
+          return;
         }
 
       });
+     
       if (ongoingIndex === -1 && upcomingIndex === -1) {
         return;
       }
 
       if (ongoingIndex !== -1) {
         const skippedTask = this.TodayTaskArray.splice(ongoingIndex, 1)[0];
-        // let newStartTime = new Date(skippedTask.start).getTime();
+       
         this.TodayTaskArray = this.TodayTaskArray.sort((a: any, b: any) => a.start.getTime() - b.start.getTime());
 
         let tempStart = skippedTask.start;
@@ -1048,9 +1051,9 @@ export class AlarmComponent implements OnInit {
           const newEndTime = new Date(tempStartTime + duration);
           this.TodayTaskArray[index].start = new Date(tempStartTime);
           this.TodayTaskArray[index].end = newEndTime;
+          console
           tempStart = taskStart;
         }
-        // console.log("Hello console", this.TodayTaskArray)
 
         const duration = Math.abs(new Date(skippedTask.end).getTime() - new Date(skippedTask.start).getTime())
 
