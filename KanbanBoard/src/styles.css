@@ -1,0 +1,52 @@
+
+  .column {
+    padding: 0px 2px;
+  }
+  
+  .task-container {
+    min-height: 80vh;
+    background-color: #f1f1f1;
+    border-radius: 10px;
+    /* margin-bottom: 50px; */
+  }
+  
+
+  
+  .card {
+    margin: 0px 2px;
+    width: 100%;
+    box-shadow:0px 6px 6px 0px gray ;
+    border-radius: 5px;
+  }
+  
+  .icon-container {
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+  }
+
+  .project-process-bar{
+    width: 30px ; height: 5px; border-radius: 50px;
+  }
+  
+  @media only screen and (max-width: 480px) {
+    .card {
+      margin: 0px 10px;
+      box-shadow: 0px 0px 5px 1px gray; 
+    }
+    .column{
+      box-shadow: 0px 0px 5px 0.5px gray;
+      margin: 0px 2px;
+    }
+    .project-process-bar{
+      width: 10px ; height: 10px; border-radius: 50px;
+    }
+    .column-name{
+      padding: 4px;
+    }
+  }
+  .mr-r{
+    margin-right: 10px;
+  }
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

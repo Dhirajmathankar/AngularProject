@@ -1,0 +1,109 @@
+<!-- <app-nav-bar></app-nav-bar> -->
+<!-- <app-backtasklist></app-backtasklist> -->
+
+<!-- <div *ngIf="showFormData">
+  <div class="form-container form-center" style="position: fixed; top: 2vh;">
+    <div>
+      <h2>Select Options</h2>
+      <label for="multi-select">Multiple Select:</label>
+      <select id="multi-select" name="multi-select" multiple>
+        <option *ngFor="let option of optionlistchackbox" [value]="option" class="option-style">{{ option }}</option>
+      </select>
+      <button type="button" (click)="submitform()">Submit</button>
+    </div>
+  </div>
+</div> -->
+
+<section *ngIf="sucessAlert"  style="position: fixed; right: 0px; top: 10px; padding: 10px; color: white; z-index: 1; background-color: rgb(0, 198, 0); width: 200px; box-shadow: 0px 0px 20px 5px gray; border-radius: 5px; ">
+  <div>
+    <div>
+      You can only drop tasks in this column.
+      <ul style="text-align: left;">
+        <li *ngFor = "let validationBotName of validationArray" style="list-style: none;"><i class="fa-solid fa-chart-simple"></i> {{validationBotName.statusName}} </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section  *ngIf="Alert"  style="position: fixed; right: 0px; top: 10px; padding: 10px; color: white; z-index: 1; background-color: rgb(202, 69, 2); width: 200px; box-shadow: 0px 0px 20px 5px gray;  border-radius: 5px;">
+  <div>
+    <div>
+      You are not authorized to drop the task into {{showColumnNameInAlert}} column.
+    </div>
+  </div>
+</section>
+
+<nav class="navbar navbar-light bg-light" style="box-shadow: 0px 1px 3px 0px gray;">
+	<div class="container-fluid">
+		<div>
+			<i class="fa-solid fa-clipboard " style="font-size: 20px; color: #0481e6;"></i><b>{{items[0].projectName}}</b>
+		</div>
+		<div class="d-flex">
+			<div class="dropdown">
+				<button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" style="background-color: #0481e6; color: white;" data-bs-toggle="dropdown" aria-expanded="false">
+					<i class="fa-solid fa-circle-info m-1" title=" Is Assignable To User-No
+					Is Releasable-No" style="font-size: 18px;"> </i>
+				</button>
+				<ul class="dropdown-menu" style="position: fixed; right: 0px; top: 50px; left:auto; width: 260px; padding: 10px; box-shadow:2px 2px 10px 2px gray;" aria-labelledby="dropdownMenuButton1">
+				  <li> <i class="fa-solid fa-table-list m-1" title="Total Task" style="font-size: 18px; color: #0481e6;"> </i><sup> {{items[0].total}}</sup> Total Task</li>
+				  <li><i class="fa-solid fa-table-columns m-1"  title="Total Status Column" style="font-size: 18px; color: #0481e6;">  </i><sup> {{items[0].ProjectstatusNameArray.length}}</sup> Total Status Column</li>
+				  <li><i class="fa-solid fa-chart-column m-1" style="color:#0481e6;"></i> Is Assignable-No</li>
+				  <li><i class="fa-solid fa-chart-line m-1" style="color: #0481e6;"></i> Is Releasable-No</li>
+				</ul>
+			  </div>
+		</div>
+	</div>
+</nav>
+
+<div class="main-con">
+  <div class="left-con">
+    <div class="text-orientation" >
+      <b>Completed</b>
+    </div>
+    <div class="task-number">
+      <p class="task-number-st"> 
+      <b>
+        {{getCountCompleteTask(items[0].taskList)}}
+      </b>  
+      </p>
+    </div>
+  </div>
+  <div class="board flex w-100" #boardContainer  [ngClass]="{'XmandatorySetCss': !XmandatorySetCss}">
+    <div *ngFor="let key of items[0].ProjectstatusNameArray" class="column" >
+      <div [id]="key" (drop)="drop($event, key)" (dragover)="allowDrop($event)">
+        <h6 class="column-name" style="color: white;">
+          <strong>{{ key }}</strong>
+        </h6>
+        <div class="task-container ">
+          <div *ngFor="let tasklistitem of items[0].taskList">
+            <div *ngIf="key == tasklistitem.statusName" >
+              <div class="task mt-2" [attr.id]="tasklistitem.eventId" draggable="true"
+                (dragstart)="drag($event, key, tasklistitem.eventId, tasklistitem.templateId, tasklistitem.botId)" >
+                <div class="card" >
+                  <div style="padding: 5px 10px;">
+                    <div class="card-top">
+                      <p style="margin: 0px; padding: 0px; flex: 1;" title="Task Creator">
+                        <i class="fa-solid fa-circle-user"></i> {{tasklistitem['Task Creator'] || "Not Available"}}
+                      </p>
+                      <p class="project-process-bar"  [ngStyle]="{'background-color': getTaskColor(tasklistitem.orchestratorStatus)}"></p>
+                    </div>
+                    <div class="task-list extra-m-p">
+                      <p>{{tasklistitem.Task || "Task Not Available"}}</p>
+                    </div>
+                    <div class="icon-container" style="">
+                      <p style="flex: 1;" class="font-size extra-m-p">{{tasklistitem.Assignee || "Not Available"}}</p>
+                      <p class="font-size extra-m-p">
+                        <i class="fa-solid fa-calendar-days"></i> {{ParseDate(tasklistitem['Created At'] || "Invalid Date")}}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> 
+    </div>
+  </div>
+</div>
+
