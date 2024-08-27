@@ -1,0 +1,171 @@
+{
+	"heading": "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+	"subheading": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste minima repellat cupiditate a, explicabo deleniti illo corporis quo, obcaecati sunt laudantium, ducimus culpa neque ut officia laborum hic! Eligendi, perspiciatis?",
+	"headlingbackgroundImage": "logo",
+	"create At": {
+	  "$date": "2024-07-30T18:30:00.000Z"
+	},
+	"callToAction": {
+	  "$numberLong": "6261109366"
+	},
+	"productWorkAbout": {
+	  "productVideo": "https://www.w3schools.com/html/mov_bbb.mp4",
+	  "productVideoDes": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste minima repellat cupiditate a, explicabo deleniti illo corporis quo, obcaecati sunt laudantium, productVideoDes",
+	  "productVideoAbout": [
+		{
+		  "title": "Lorem ipsum dolor sit ",
+		  "des": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste minima repellat cupiditate a, explicabo deleniti illo corporis quo, obcaecati sunt laudantium, ",
+		  "logo": "https://images.pexels.com/photos/281260/pexels-photo-281260.jpeg?auto=compress&cs=tinysrgb&w=600"
+		},
+		{
+		  "title": "Lorem ipsum dolor sit ",
+		  "des": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste minima repellat cupiditate a, explicabo deleniti illo corporis quo, obcaecati sunt laudantium, ",
+		  "logo": "https://images.pexels.com/photos/281260/pexels-photo-281260.jpeg?auto=compress&cs=tinysrgb&w=600"
+		}
+	  ]
+	},
+	"bigCompanyinfo": {
+	  "bigCompanyTitlte": "Over 2500+ high-growth companies trust SpringVerify for employee background verification",
+	  "bigCompanyLogos": [
+		"https://cdn.prod.website-files.com/61f1b37129d720e4ab1ce612/628d04cbd07e956c9bb48769_cred.svg",
+		"https://cdn.prod.website-files.com/61f1b37129d720e4ab1ce612/628f54998f04ca9e66d18ff5_flipkart.svg",
+		"https://cdn.prod.website-files.com/61f1b37129d720e4ab1ce612/628d04c97bfe1d6efccfca5b_open.svg",
+		"https://cdn.prod.website-files.com/61f1b37129d720e4ab1ce612/628f54998f04ca9e66d18ff5_flipkart.svg",
+		"https://cdn.prod.website-files.com/61f1b37129d720e4ab1ce612/628d04c97bfe1d6efccfca5b_open.svg",
+		"https://cdn.prod.website-files.com/61f1b37129d720e4ab1ce612/628d04c9db61879875f27430_razorpay.svg",
+		"https://cdn.prod.website-files.com/61f1b37129d720e4ab1ce612/628d04c9db61879875f27430_razorpay.svg",
+		"https://cdn.prod.website-files.com/61f1b37129d720e4ab1ce612/628f54dc1486c506cd3ec7cc_meesho.svg",
+		"https://cdn.prod.website-files.com/61f1b37129d720e4ab1ce612/628d04cbc5155618a7820962_instamojo.svg",
+		"https://cdn.prod.website-files.com/61f1b37129d720e4ab1ce612/628f551ba1393bb44172a315_warzirx.svg",
+		"https://cdn.prod.website-files.com/61f1b37129d720e4ab1ce612/62b01404612c976345d8cf19_slice.svg",
+		"https://cdn.prod.website-files.com/61f1b37129d720e4ab1ce612/628f5c1aa196af3f41076043_apollo.svg",
+		"https://cdn.prod.website-files.com/61f1b37129d720e4ab1ce612/628d04c9f032720c17e89861_cashfree.svg"
+	  ]
+	},
+	"benefits": {
+	  "benefitsdes": "Lorem ipsum dolor sit Lorem ipsum dolor sit Lorem ipsum dolor sit Lorem ipsum dolor sit Lorem ipsum dolor sit Lorem ipsum dolor sit Lorem ipsum dolor sit Lorem ipsum dolor sit Lorem ipsum dolor sit Lorem ipsum dolor sit ",
+	  "benefitslist": [
+		{
+		  "logo": "https://images.pexels.com/photos/281260/pexels-photo-281260.jpeg?auto=compress&cs=tinysrgb&w=600",
+		  "benefitslisttitle": "Lorem ipsum dolor sit ",
+		  "benefitslistdes": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid voluptatum dignissimos ipsum dolorem hic non, recusandae sunt quisquam."
+		},
+		{
+		  "logo": "https://images.pexels.com/photos/281260/pexels-photo-281260.jpeg?auto=compress&cs=tinysrgb&w=600",
+		  "benefitslisttitle": "Lorem ipsum dolor sit ",
+		  "benefitslistdes": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid voluptatum dignissimos ipsum dolorem hic non, recusandae sunt quisquam."
+		},
+		{
+		  "logo": "https://images.pexels.com/photos/281260/pexels-photo-281260.jpeg?auto=compress&cs=tinysrgb&w=600",
+		  "benefitslisttitle": "Lorem ipsum dolor sit ",
+		  "benefitslistdes": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid voluptatum dignissimos ipsum dolorem hic non, recusandae sunt quisquam."
+		},
+		{
+		  "logo": "https://images.pexels.com/photos/281260/pexels-photo-281260.jpeg?auto=compress&cs=tinysrgb&w=600",
+		  "benefitslisttitle": "Lorem ipsum dolor sit ",
+		  "benefitslistdes": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid voluptatum dignissimos ipsum dolorem hic non, recusandae sunt quisquam."
+		},
+		{
+		  "logo": "https://images.pexels.com/photos/281260/pexels-photo-281260.jpeg?auto=compress&cs=tinysrgb&w=600",
+		  "benefitslisttitle": "Lorem ipsum dolor sit ",
+		  "benefitslistdes": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid voluptatum dignissimos ipsum dolorem hic non, recusandae sunt quisquam."
+		}
+	  ]
+	},
+	"HowItWork": {
+	  "HowItWorkdes": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid voluptatum dignissimos ipsum dolorem hic non, recusandae sunt quisquam. Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid voluptatum dignissimos ipsum dolorem hic non, recusandae sunt quisquam.",
+	  "HowItWorklist": [
+		{
+		  "logo": "https://images.pexels.com/photos/281260/pexels-photo-281260.jpeg?auto=compress&cs=tinysrgb&w=600",
+		  "HowItWorklistdes": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid voluptatum dignissimos ipsum dolorem hic non, recusandae sunt quisquam.",
+		  "HowItWorklisttitle": "orem ipsum dolor sit amet "
+		},
+		{
+		  "logo": "https://images.pexels.com/photos/281260/pexels-photo-281260.jpeg?auto=compress&cs=tinysrgb&w=600",
+		  "HowItWorklistdes": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid voluptatum dignissimos ipsum dolorem hic non, recusandae sunt quisquam.",
+		  "HowItWorklisttitle": "orem ipsum dolor sit amet "
+		},
+		{
+		  "logo": "https://images.pexels.com/photos/281260/pexels-photo-281260.jpeg?auto=compress&cs=tinysrgb&w=600",
+		  "HowItWorklistdes": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid voluptatum dignissimos ipsum dolorem hic non, recusandae sunt quisquam.",
+		  "HowItWorklisttitle": "orem ipsum dolor sit amet "
+		},
+		{
+		  "logo": "https://images.pexels.com/photos/281260/pexels-photo-281260.jpeg?auto=compress&cs=tinysrgb&w=600",
+		  "HowItWorklistdes": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid voluptatum dignissimos ipsum dolorem hic non, recusandae sunt quisquam.",
+		  "HowItWorklisttitle": "orem ipsum dolor sit amet "
+		},
+		{
+		  "logo": "https://images.pexels.com/photos/281260/pexels-photo-281260.jpeg?auto=compress&cs=tinysrgb&w=600",
+		  "HowItWorklistdes": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid voluptatum dignissimos ipsum dolorem hic non, recusandae sunt quisquam.",
+		  "HowItWorklisttitle": "orem ipsum dolor sit amet "
+		},
+		{
+		  "logo": "https://images.pexels.com/photos/281260/pexels-photo-281260.jpeg?auto=compress&cs=tinysrgb&w=600",
+		  "HowItWorklistdes": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid voluptatum dignissimos ipsum dolorem hic non, recusandae sunt quisquam.",
+		  "HowItWorklisttitle": "Lorem ipsum dolor sit amet consectetur adipisicing"
+		}
+	  ]
+	},
+	"testimonials": {
+	  "testimonialsdes": "Lorem ipsum dolor sit Lorem ipsum dolor sit Lorem ipsum dolor sit Lorem ipsum dolor sit Lorem ipsum dolor sit Lorem ipsum dolor sit Lorem ipsum dolor sit Lorem ipsum dolor sit Lorem ipsum dolor sit Lorem ipsum dolor sittestimonialsdes",
+	  "testimonialsclientlist": [
+		{
+		  "companyorclientlogo": "https://cdn-icons-png.flaticon.com/512/149/149071.png",
+		  "clientProfession": "Software developer",
+		  "casestudies": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste minima repellat cupiditate a, explicabo deleniti illo corporis quo, obcaecati sunt laudantium",
+		  "testimonialsclientName": "Dhiraj Mathanakr"
+		},
+		{
+		  "companyorclientlogo": "https://cdn-icons-png.flaticon.com/512/149/149071.png",
+		  "testimonialsclientName": "Nitesh Mathanakr",
+		  "clientProfession": "Frontend developer",
+		  "casestudies": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste minima repellat cupiditate a, explicabo deleniti illo corporis quo, obcaecati sunt laudantium"
+		},
+		{
+		  "companyorclientlogo": "https://cdn-icons-png.flaticon.com/512/149/149071.png",
+		  "testimonialsclientName": "Dhiraj Mathanakr",
+		  "clientProfession": "Backend developer",
+		  "casestudies": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste minima repellat cupiditate a, explicabo deleniti illo corporis quo, obcaecati sunt laudantium"
+		},
+		{
+		  "companyorclientlogo": "https://cdn-icons-png.flaticon.com/512/149/149071.png",
+		  "testimonialsclientName": "Dhiraj Mathanakr",
+		  "clientProfession": "------------",
+		  "casestudies": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste minima repellat cupiditate a, explicabo deleniti illo corporis quo, obcaecati sunt laudantium"
+		},
+		{
+		  "companyorclientlogo": "https://cdn-icons-png.flaticon.com/512/149/149071.png",
+		  "testimonialsclientName": "Dhiraj Mathanakr",
+		  "clientProfession": "clientProfession",
+		  "casestudies": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste minima repellat cupiditate a, explicabo deleniti illo corporis quo, obcaecati sunt laudantium"
+		}
+	  ]
+	},
+	"FAQ": {
+	  "FAQdes": "Lorem ipsum dolor sit Lorem ipsum dolor sit Lorem ipsum dolor sit Lorem ipsum dolor sit Lorem ipsum dolor sit Lorem ipsum dolor sit Lorem ipsum dolor sit Lorem ipsum dolor sit Lorem ipsum dolor sit Lorem ipsum dolor sitFAQdes",
+	  "FAQlist": [
+		{
+		  "question": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste minima repellat cupiditate a, explicabo deleniti illo corporis quo, obcaecati sunt laudantium",
+		  "answer": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste minima repellat cupiditate a, explicabo deleniti illo corporis quo, obcaecati sunt laudantiumLorem ipsum dolor sit amet consectetur adipisicing elit. Iste minima repellat cupiditate a, explicabo deleniti illo corporis quo, obcaecati sunt laudantium"
+		},
+		{
+		  "question": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste minima repellat cupiditate a, explicabo deleniti illo corporis quo, obcaecati sunt laudantium",
+		  "answer": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste minima repellat cupiditate a, explicabo deleniti illo corporis quo, obcaecati sunt laudantiumLorem ipsum dolor sit amet consectetur adipisicing elit. Iste minima repellat cupiditate a, explicabo deleniti illo corporis quo, obcaecati sunt laudantium"
+		},
+		{
+		  "question": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste minima repellat cupiditate a, explicabo deleniti illo corporis quo, obcaecati sunt laudantium",
+		  "answer": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste minima repellat cupiditate a, explicabo deleniti illo corporis quo, obcaecati sunt laudantiumLorem ipsum dolor sit amet consectetur adipisicing elit. Iste minima repellat cupiditate a, explicabo deleniti illo corporis quo, obcaecati sunt laudantium"
+		},
+		{
+		  "question": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste minima repellat cupiditate a, explicabo deleniti illo corporis quo, obcaecati sunt laudantium",
+		  "answer": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste minima repellat cupiditate a, explicabo deleniti illo corporis quo, obcaecati sunt laudantiumLorem ipsum dolor sit amet consectetur adipisicing elit. Iste minima repellat cupiditate a, explicabo deleniti illo corporis quo, obcaecati sunt laudantium"
+		},
+		{
+		  "question": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste minima repellat cupiditate a, explicabo deleniti illo corporis quo, obcaecati sunt laudantium",
+		  "answer": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste minima repellat cupiditate a, explicabo deleniti illo corporis quo, obcaecati sunt laudantiumLorem ipsum dolor sit amet consectetur adipisicing elit. Iste minima repellat cupiditate a, explicabo deleniti illo corporis quo, obcaecati sunt laudantium"
+		}
+	  ]
+	},
+	"backgroundImg": "https://images.pexels.com/photos/281260/pexels-photo-281260.jpeg?auto=compress&cs=tinysrgb&w=600"
+  }
