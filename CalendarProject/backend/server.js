@@ -5,7 +5,10 @@ const { MongoClient, ObjectId } = require('mongodb');
 const bodyParser = require('body-parser');
 const { find } = require('rxjs');
 const { getDate } = require('date-fns');
-
+const path = require('path');
+const { exec } = require('child_process');
+const { LocalStorage } = require('node-localstorage');
+const localStorage = new LocalStorage('./scratch');
 const app = express();
 const PORT = 3000;
 const dbName = 'Kanban';
@@ -31,14 +34,19 @@ MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   
 
   app.get("/checkPromodora", (req, res) => {
-	let value = localStorage.getItem("promodorastatus")
-	res.send({"status":value})
+	// let value = localStorage.getItem("promodorastatus")
+	const parentDir = path.join(__dirname, '..');
+	const value = path.join(parentDir, "dist/MyApp-win32-x64/MyApp.exe")
+	console.log(parentDir , value,  "dirname")
+	res.send({"status":"runing"})
   })
 
   app.get("/runPromodora", (req, res) => {
-	const exePath = 'E:\\DeskTopProject\\PromodoraDesktop\\dist\\MyApp-win32-x64\\MyApp.exe';
-  localStorage.setItem("promodorastatus", true)
-	const child = exec(`"${exePath}"`, (error, stdout, stderr) => {
+	// const exePath = 'E:\\PromodoraDesktop\\dist\\MyApp-win32-x64\\MyApp.exe';
+	const parentDir = path.join(__dirname, '..');
+	const value = path.join(parentDir, "dist/MyApp-win32-x64/MyApp.exe")
+    localStorage.setItem("promodorastatus", true)
+	const child = exec(`"${value}"`, (error, stdout, stderr) => {
 	  if (error) {
 		console.error(`Error: ${error}`);
 		return res.send({ "status": false });
@@ -46,7 +54,6 @@ MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
 	  res.send({ "status": true });
 	  localStorage.setItem("promodorastatus", false)
 	});
-	// res.send({ "status": true });
   });
   
 

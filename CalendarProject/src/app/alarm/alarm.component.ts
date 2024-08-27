@@ -747,11 +747,11 @@ export class AlarmComponent implements OnInit {
       const RuningTime = this.calculateTimeDifference(this.TodayTaskArray[checkTaskPosition.ongoingTaskInnerIndex].end)
       const task = this.TodayTaskArray[checkTaskPosition.ongoingTaskInnerIndex];
       if (RuningTime.minutes <= 1) {
-        this.startCountdown(RuningTime, { titleSms:  `Task Will be End in ${RuningTime.seconds }Sec.... `, eventTitle: task.title }, task.id);
+        this.startCountdown(RuningTime, { titleSms: `Task Will be End in ${RuningTime.seconds}Sec.... `, eventTitle: task.title }, task.id);
         if (this.meuteButtonIcon) {
           this.playAudio()
         }
-      }else{
+      } else {
         this.startCountdown(RuningTime, { titleSms: "Task ongoing.... ", eventTitle: task.title }, task.id);
       }
       // console.log(this.calculateTimeDifference(this.TodayTaskArray[checkTaskPosition.ongoingTaskInnerIndex].end))
@@ -769,15 +769,15 @@ export class AlarmComponent implements OnInit {
       const RuningTime = this.calculateTimeDifference(this.TodayTaskArray[checkTaskPosition.ongoingTaskOuterIndex].end)
       const task = this.TodayTaskArray[checkTaskPosition.ongoingTaskOuterIndex];
       if (RuningTime.minutes <= 1) {
-        this.startCountdown(RuningTime, { titleSms: `Task Will be End in ${RuningTime.seconds }Sec.... `, eventTitle: task.title }, task.id);
+        this.startCountdown(RuningTime, { titleSms: `Task Will be End in ${RuningTime.seconds}Sec.... `, eventTitle: task.title }, task.id);
         if (this.meuteButtonIcon) {
           this.playAudio()
         }
-       
-      }else{
+
+      } else {
         this.startCountdown(RuningTime, { titleSms: "Task ongoing.... ", eventTitle: task.title }, task.id);
       }
-     
+
       // console.log(this.calculateTimeDifference(this.TodayTaskArray[checkTaskPosition.ongoingTaskOuterIndex].end!))
     }
     else if (checkTaskPosition.ongoingTaskEnd === 1) {
@@ -813,8 +813,8 @@ export class AlarmComponent implements OnInit {
           if (this.meuteButtonIcon) {
             this.playAudio()
           }
-         
-        }else{
+
+        } else {
           this.startCountdown(RuningTime, { titleSms: "Your UpComing Task... ", eventTitle: upcomingTask.title }, upcomingTask.id);
         }
 
@@ -982,6 +982,7 @@ export class AlarmComponent implements OnInit {
   }
 
   reloadTask() {
+
     this.ngOnInit()
     this.loadEvents()
     // this.startCountdown(10, "Created At-2024-05-29T07:02:13.023Z , Task Creator-Monalisa Sahoo , Task-JWT Implementation , Due Date-2024-08-13T12:47:00.000Z , projectName - Collab Pro CLD", '')
@@ -1016,76 +1017,79 @@ export class AlarmComponent implements OnInit {
     let lastTaskEnd: Date | null = null;
     let ongoingIndex = -1;
     let upcomingIndex = -1;
-
-    this.TodayTaskArray.forEach((task: any, index: any) => {
-      const startTime = new Date(task.start);
-      const endTime = new Date(task.end);
-      if (now >= startTime && now <= endTime && this.TodayTaskArray[index + 1] && ongoingIndex === -1) {
-        ongoingIndex = index;
-      }
-      else if (now <= startTime && this.TodayTaskArray[index] && upcomingIndex === -1) {
-        upcomingIndex = index;
-      }
-
-    });
-    if (ongoingIndex === -1 && upcomingIndex === -1) {
-      return;
-    }
-
-    if (ongoingIndex !== -1) {
-      const skippedTask = this.TodayTaskArray.splice(ongoingIndex, 1)[0];
-      // let newStartTime = new Date(skippedTask.start).getTime();
-      this.TodayTaskArray = this.TodayTaskArray.sort((a: any, b: any) => a.start.getTime() - b.start.getTime());
-
-      let tempStart = skippedTask.start;
-
-      for (let index = ongoingIndex; index < this.TodayTaskArray.length; index++) {
-        const taskStart = new Date(this.TodayTaskArray[index].start);
-        const taskEnd = new Date(this.TodayTaskArray[index].end);
-        const duration = Math.abs(taskEnd.getTime() - taskStart.getTime());
-        const tempStartTime = new Date(tempStart).getTime();
-        const newEndTime = new Date(tempStartTime + duration);
-        this.TodayTaskArray[index].start = new Date(tempStartTime);
-        this.TodayTaskArray[index].end = newEndTime;
-        tempStart = taskStart;
-      }
-      // console.log("Hello console", this.TodayTaskArray)
-
-      const duration = Math.abs(new Date(skippedTask.end).getTime() - new Date(skippedTask.start).getTime())
-
-      skippedTask.start = new Date(this.TodayTaskArray[this.TodayTaskArray.length - 1].end + 5 * 60 * 1000);
-      console.log(skippedTask.start, duration)
-      skippedTask.end = new Date(skippedTask.start + duration);
-      this.TodayTaskArray.push(skippedTask)
-      console.log(this.TodayTaskArray)
-
-      for (let index = ongoingIndex; index < this.TodayTaskArray.length; index++) {
-        try {
-          this.eventService.updateEvent(
-            `${this.TodayTaskArray[index]['id'][0]}`,
-            `${this.TodayTaskArray[index]['id'][1]}`,
-            { "Due Date": this.TodayTaskArray[index]['start'], "End Date": this.TodayTaskArray[index]['end'] }
-          ).subscribe();
-          console.log("done")
-
-        } catch (e) {
-          console.log(e)
+    if (confirm("Do you want skip?")) {
+      this.TodayTaskArray.forEach((task: any, index: any) => {
+        const startTime = new Date(task.start);
+        const endTime = new Date(task.end);
+        if (now >= startTime && now <= endTime && this.TodayTaskArray[index + 1] && ongoingIndex === -1) {
+          ongoingIndex = index;
+        }
+        else if (now <= startTime && this.TodayTaskArray[index] && upcomingIndex === -1) {
+          upcomingIndex = index;
         }
 
+      });
+      if (ongoingIndex === -1 && upcomingIndex === -1) {
+        return;
       }
 
+      if (ongoingIndex !== -1) {
+        const skippedTask = this.TodayTaskArray.splice(ongoingIndex, 1)[0];
+        // let newStartTime = new Date(skippedTask.start).getTime();
+        this.TodayTaskArray = this.TodayTaskArray.sort((a: any, b: any) => a.start.getTime() - b.start.getTime());
 
-    } else if (upcomingIndex !== -1 && ongoingIndex === -1) {
-      let currentDate = new Date();
-      this.TodayTaskArray[upcomingIndex].start = currentDate;
-      this.eventService.updateEvent(
-        `${this.TodayTaskArray[upcomingIndex]['id'][0]}`,
-        `${this.TodayTaskArray[upcomingIndex]['id'][1]}`,
-        { "Due Date": this.TodayTaskArray[upcomingIndex]['start'], "End Date": this.TodayTaskArray[upcomingIndex]['end'] }
-      ).subscribe();
-      this.ngOnInit();
-      return;
+        let tempStart = skippedTask.start;
+
+        for (let index = ongoingIndex; index < this.TodayTaskArray.length; index++) {
+          const taskStart = new Date(this.TodayTaskArray[index].start);
+          const taskEnd = new Date(this.TodayTaskArray[index].end);
+          const duration = Math.abs(taskEnd.getTime() - taskStart.getTime());
+          const tempStartTime = new Date(tempStart).getTime();
+          const newEndTime = new Date(tempStartTime + duration);
+          this.TodayTaskArray[index].start = new Date(tempStartTime);
+          this.TodayTaskArray[index].end = newEndTime;
+          tempStart = taskStart;
+        }
+        // console.log("Hello console", this.TodayTaskArray)
+
+        const duration = Math.abs(new Date(skippedTask.end).getTime() - new Date(skippedTask.start).getTime())
+
+        skippedTask.start = new Date(this.TodayTaskArray[this.TodayTaskArray.length - 1].end + 5 * 60 * 1000);
+        console.log(skippedTask.start, duration)
+        skippedTask.end = new Date(skippedTask.start + duration);
+        this.TodayTaskArray.push(skippedTask)
+        console.log(this.TodayTaskArray)
+
+        for (let index = ongoingIndex; index < this.TodayTaskArray.length; index++) {
+          try {
+            this.eventService.updateEvent(
+              `${this.TodayTaskArray[index]['id'][0]}`,
+              `${this.TodayTaskArray[index]['id'][1]}`,
+              { "Due Date": this.TodayTaskArray[index]['start'], "End Date": this.TodayTaskArray[index]['end'] }
+            ).subscribe();
+            console.log("done")
+
+          } catch (e) {
+            console.log(e)
+          }
+
+        }
+
+
+      } else if (upcomingIndex !== -1 && ongoingIndex === -1) {
+        let currentDate = new Date();
+        this.TodayTaskArray[upcomingIndex].start = currentDate;
+        this.eventService.updateEvent(
+          `${this.TodayTaskArray[upcomingIndex]['id'][0]}`,
+          `${this.TodayTaskArray[upcomingIndex]['id'][1]}`,
+          { "Due Date": this.TodayTaskArray[upcomingIndex]['start'], "End Date": this.TodayTaskArray[upcomingIndex]['end'] }
+        ).subscribe();
+        this.ngOnInit();
+        return;
+      }
     }
+
+
     this.ngOnInit();
   }
 
@@ -1111,6 +1115,8 @@ export class AlarmComponent implements OnInit {
   DoneTaskInfo: string = "Choose your break time:"
 
   CompleteTask() {
+    if (confirm("Have you confirm you have completed your Task")) {
+      
     if (this.checkOnGoingTask() + 1 < this.TodayTaskArray.length) {
       this.showBreakTimeInput = true;
       this.showBreakTimeInputsms = true;
@@ -1122,7 +1128,7 @@ export class AlarmComponent implements OnInit {
       setTimeout(() => {
         this.showBreakTimeInput = false;
       }, 1000)
-    }
+    }}
   }
   onBreakTimeChange(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
@@ -1153,7 +1159,6 @@ export class AlarmComponent implements OnInit {
       try {
         await this.eventService.updateEvent(`${nextTask['id'][0]}`, `${nextTask['id'][1]}`, { "Due Date": nextTask['start'], "End Date": nextTask['end'] }).subscribe();
       } catch (error) {
-        console.log("sorry dhiraj")
       }
 
     }
