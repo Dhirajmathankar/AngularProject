@@ -80,6 +80,8 @@ export class AppComponent implements OnInit {
   alertedEndEvents: Set<string> = new Set(); // Store alerted end event IDs
   TodayTaskArray: any[] = []; // this array for store all the today event 
   // datePipe: any;
+  arrangeTaskForm : boolean = true
+   
   constructor(public modal: NgbModal, private eventService: EventService) { }
   disableOnmobileAddToScreen : any = true;
   ngOnInit(): void {
@@ -270,6 +272,7 @@ export class AppComponent implements OnInit {
 
    eventTimesChanged({ event, newStart,  newEnd }: CalendarEventTimesChangedEvent): void {
     console.log(event, newStart, newEnd)
+    this.arrangeTaskForm  = false
     this.events =  this.events.map( (iEvent )=> {
       if (iEvent === event) {
         const updatedEvent = { ...event, start: newStart, end: newEnd };
@@ -408,6 +411,83 @@ infoOfChanges : string = 'Save'
       this.promodoraWindow = response.status
     }
    );
+  }
+
+
+  nowTaskStartTime : Date | undefined ;
+  breakTimebetweenTask : number  = 5;
+  arrangeAllTask(){
+    this.arrangeTaskForm  = true
+    this.nowTaskStartTime = new Date()
+    this.editingEvent = null;
+    // console.log(this.nowTaskStartTime)
+    this.modal.open(this.modalContent, { size: 'md' });
+  }
+   taskArrangeFormatValue : any = null;
+   taskArrangeFormatformCostom : any = false;
+  onSelectChange(event: Event): void {
+    this.taskArrangeFormatValue = (event.target as HTMLSelectElement).value;
+    if(this.taskArrangeFormatValue === 'Custom'){
+      this.taskArrangeFormatformCostom = true
+
+    }else{
+      this.taskArrangeFormatformCostom = false
+    }
+  }
+  costomValueInputToUser : boolean = false
+  costomValueInputToUserValue : any = 25;
+  costomValueInputToUserCheckBox(event: Event): void{
+ this.costomValueInputToUser = (event.target as HTMLInputElement).checked
+//  console.log(this.costomValueInputToUserValue); = 
+if (!this.costomValueInputToUser) {
+  this.costomValueInputToUserValue  = 25;
+}
+  }
+
+  arrangeAllTaskWindowclose(){
+    // console.log(this.nowTaskStartTime)
+    if (this.breakTimebetweenTask === 0) {
+      this.breakTimebetweenTask = 5;
+    }
+  if (this.taskArrangeFormatValue  === 'Custom') {
+   
+    this.TodayTaskArray.forEach((taskIteam:any, index : number)=>{
+      let duration  ;
+      if (this.costomValueInputToUser) {
+        duration = this.costomValueInputToUserValue*60*1000;
+      }else{
+        duration = Math.abs(new Date(taskIteam.end).getTime() - new Date(taskIteam.start).getTime())
+      }
+      // console.log(duration)
+    //   Math.abs(new Date(taskIteam.end).getTime() - new Date(taskIteam.start).getTime())
+    // console.log("this is your breack Time " , this.breakTimebetweenTask , "task duration time " ,this.costomValueInputToUserValue, "this is task duration costom or manual ", this.costomValueInputToUser)
+
+      this.TodayTaskArray[index].start = this.nowTaskStartTime ;
+      this.TodayTaskArray[index].end = new Date( this.TodayTaskArray[index].start.getTime() + duration ) ;
+      this.eventService.updateEvent(`${taskIteam.id[0]}`, `${taskIteam.id[1]}`, {
+        "Due Date": taskIteam.start,
+        "End Date": taskIteam.end
+      }).subscribe();
+      this.nowTaskStartTime =  new Date(this.TodayTaskArray[index].end.getTime() + this.breakTimebetweenTask * 60 * 1000)
+    
+    })
+   
+  }else{
+    this.TodayTaskArray.forEach((taskIteam:any, index : number)=>{
+      const duration = Math.abs(new Date(taskIteam.end).getTime() - new Date(taskIteam.start).getTime())
+      this.TodayTaskArray[index].start = this.nowTaskStartTime ;
+      this.TodayTaskArray[index].end = new Date( this.TodayTaskArray[index].start.getTime() + duration ) ;
+      this.eventService.updateEvent(`${taskIteam.id[0]}`, `${taskIteam.id[1]}`, {
+        "Due Date": taskIteam.start,
+        "End Date": taskIteam.end
+      }).subscribe();
+      this.nowTaskStartTime =  new Date(this.TodayTaskArray[index].end.getTime() + this.breakTimebetweenTask * 60 * 1000)
+    })
+    
+    // console.log("this is after update", this.TodayTaskArray)
+  }
+  this.ngOnInit()
+  this.taskArrangeFormatformCostom = false
   }
   // formatDateForchange(date: Date): any {
   //   console.log(("Hello console Dhiraj"), this.datePipe.transform(date, 'yyyy-MM-ddTHH:mm'));

@@ -746,7 +746,7 @@ export class AlarmComponent implements OnInit {
       // console.log("Inner Task Runing", this.TodayTaskArray[checkTaskPosition.ongoingTaskInnerIndex].start)
       const RuningTime = this.calculateTimeDifference(this.TodayTaskArray[checkTaskPosition.ongoingTaskInnerIndex].end)
       const task = this.TodayTaskArray[checkTaskPosition.ongoingTaskInnerIndex];
-      if (RuningTime.minutes <= 1) {
+      if (RuningTime.minutes <= 0) {
         this.startCountdown(RuningTime, { titleSms: `Task Will be End in ${RuningTime.seconds}Sec.... `, eventTitle: task.title }, task.id);
         if (this.meuteButtonIcon) {
           this.playAudio()
@@ -768,7 +768,7 @@ export class AlarmComponent implements OnInit {
       // console.log("Task ongoing", checkTaskPosition.ongoingTaskOuterIndex)
       const RuningTime = this.calculateTimeDifference(this.TodayTaskArray[checkTaskPosition.ongoingTaskOuterIndex].end)
       const task = this.TodayTaskArray[checkTaskPosition.ongoingTaskOuterIndex];
-      if (RuningTime.minutes <= 1) {
+      if (RuningTime.minutes <= 0) {
         this.startCountdown(RuningTime, { titleSms: `Task Will be End in ${RuningTime.seconds}Sec.... `, eventTitle: task.title }, task.id);
         if (this.meuteButtonIcon) {
           this.playAudio()
@@ -808,7 +808,7 @@ export class AlarmComponent implements OnInit {
         const RuningTime = this.calculateTimeDifference(upcomingTask.start)
         // this.startCountdown(RuningTime, { titleSms: "Your UpComing Task... ", eventTitle: upcomingTask.title }, upcomingTask.id);
 
-        if (RuningTime.minutes <= 1) {
+        if (RuningTime.minutes <= 0) {
           this.startCountdown(RuningTime, { titleSms: `Task will start in ${RuningTime.seconds}Sec... `, eventTitle: upcomingTask.title }, upcomingTask.id);
           if (this.meuteButtonIcon) {
             this.playAudio()
