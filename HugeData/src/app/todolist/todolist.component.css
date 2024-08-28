@@ -1,0 +1,64 @@
+
+
+.board {
+    display: flex;
+    flex-wrap:nowrap;
+      /*  justify-content: space-around;
+    padding: 20px; */
+}
+
+.column {
+    padding-bottom: 10px;
+}
+
+.column-h2 {
+    font-size: 18px;
+    color: #333;
+}
+
+
+
+
+
+
+.add-task-btn:hover {
+    background-color: #45a049;
+}
+
+
+#todo .task {
+    background-color: #b3e5fc;
+    /* Light blue */
+}
+
+#in-progress .task {
+    background-color: #ffcdd2;
+    /* Light pink */
+}
+
+#done .task {
+    background-color: #c8e6c9;
+    /* Light green */
+}
+
+.task {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+    margin-bottom: 5px;
+    cursor: move;
+}
+
+.card-title{
+    /* background-color: #0d6efd61;
+    border: 2px solid blue; */
+    /* border-bottom: 0.5px solid red; */
+    border-radius: 5px;
+    font-size: 18px;
+    padding: 3px;
+    color: #141619;
+}
+
