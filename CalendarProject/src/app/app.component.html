@@ -1,6 +1,6 @@
 <app-alarm *ngIf="promodoraWindow"></app-alarm>
 
-<section style="margin: 0px; padding: 0px;">
+<section style="margin: 0px; padding: 0px;  position: fixed; width: 100%; z-index: 4; top: 0px;">
   <nav style="border: 2px solid gray; margin: 0px; padding: 5px; box-shadow: 0px 0px 4px 0px rgb(154, 153, 153);">
     <div class="row text-center">
       <div class="flex-date " style="display: flex;">
@@ -85,7 +85,7 @@
 </div> -->
 
 
-<section class=" p-2">
+<section class=" p-2" style="margin-top:4rem;">
   <div [ngSwitch]="view">
     <mwl-calendar-month-view *ngSwitchCase="CalendarView.Month" [viewDate]="viewDate" [events]="events"
       [refresh]="refresh" [activeDayIsOpen]="activeDayIsOpen" (dayClicked)="dayClicked($event.day)"
@@ -154,7 +154,7 @@
 <ng-template #modalContent let-close="close">
   <div style="box-shadow: 5px 5px 5px 5px gray;">
     <div class="modal-header" style="display: flex;background-color: #0481e6;">
-      <span style="font-size: 15px;flex: 1; color: white; margin-left: 5px;"> <b>{{!arrangeTaskForm ? eventstart : 'Hello Dhiraj' }}</b></span>
+      <span style="font-size: 15px;flex: 1; color: white; margin-left: 5px;"> <b>{{!arrangeTaskForm ? eventstart : 'Arrange All Task For Today' }}</b></span>
       <div>
         <i class="fa-solid fa-trash " style="color:white; margin: 0px 5px;"></i>
         <i class="fa-solid fa-edit " style="color: white; margin: 0px 5px;"></i>
@@ -171,10 +171,11 @@
       <div class="modal-body p-3" style="">
             <div class="mt-2" >
               <p><b>Task reArrange Format</b></p>
-              <select name="" class="mt-1 form-control" style="    box-shadow: 0px 1px 2px 0px gray;
+             <select name="" class="mt-1 form-control form-select" style="    box-shadow: 0px 1px 2px 0px gray;
     padding: 5px;" id="" (change)="onSelectChange($event)">
-                <option value="Automatically"> -- Automatically -- </option>
-                <option value="Custom"> -- Custom -- </option>
+                 <!--  <option value="Automatically"><i class="fa-solid fa-gears"></i> Automatically  </option> -->
+                <option value="Automatically" selected> <i class="fa-solid fa-head-side-virus"></i> Manual </option>
+                <option value="Manual"> <i class="fa-solid fa-head-side-virus"></i>  Automatically </option>
               </select>
             </div>
             <div class="mt-1">
@@ -187,16 +188,12 @@
             </div>
             <div class=" mt-2" *ngIf="taskArrangeFormatformCostom" >
             <div class="row">
-              <p class="col"><b>Select Break Time</b></p>
-              <input class=" col form-control" style="    box-shadow: 0px 1px 2px 0px gray;
-    padding: 5px;" type="Number" [(ngModel)]="breakTimebetweenTask" min="5" max="20" value="5" placeholder="Select Break Time!" />
-            </div>
-            <div class="row mt-2">
-              <p class="col col-4 mt-2"><b>Select Task Time</b></p> 
-              <p class="col col-3 mt-2">25 Default</p>
-              <p class="col col-2 mt-2">Costom  <input class="form-check-input mt-1" type="checkbox" id="gridCheck" style="border: 1px solid gray;" (change)="costomValueInputToUserCheckBox($event)" ></p>
-              <input class=" col col-3 form-control" *ngIf="costomValueInputToUser" style="width: 25%;    box-shadow: 0px 1px 2px 0px gray;
+              <p class="col"><b>Select Task & Break Time</b></p>
+              <input class=" col col-3 form-control m-2" style="width: 25%;    box-shadow: 0px 1px 2px 0px gray;
     padding: 5px;"[(ngModel)]='costomValueInputToUserValue'  type="Number" min="10" max="60" value="25" placeholder="Select Task Time?" />
+              <input class=" col form-control m-2" style="box-shadow: 0px 1px 2px 0px gray;
+    padding: 5px;width: 25%; " type="Number" [(ngModel)]="breakTimebetweenTask" min="5" max="20" value="5" placeholder="Select Break Time!" />
+     
             </div>
             </div>
       </div>

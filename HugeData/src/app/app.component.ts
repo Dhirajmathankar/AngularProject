@@ -1,4 +1,5 @@
 import { Component, ElementRef, ViewChild, AfterViewInit, Renderer2 } from '@angular/core';
+
 import { HttpClient } from '@angular/common/http';
 import { ItemService } from './item.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
@@ -36,7 +37,8 @@ export class AppComponent implements AfterViewInit {
   data: any = {};
   scrollInterval: any;
   scrollStep = 50;
-
+  ProjectstatusNameArrayTemp : any = ['Human Resources (HR)', 'Finance', 'Marketing', 'Sales', 'Information Technology (IT)', 'Quality Assurance (QA)']
+  ProjectstatusNameArrayCreateDat : any = ['28/8/2024', '27/8/2024', '26/8/2024', '25/8/2024', '24/8/2024', '23/8/2024']
   @ViewChild('boardContainer') boardContainer!: ElementRef;
 
 
@@ -101,14 +103,70 @@ export class AppComponent implements AfterViewInit {
     }
   }
 
-  ngOnInit() {
-    this.itemService.getItems().subscribe(data => {
-      this.items = data;
-      // this.itemListObject = data[0].tasklist;
-      // this.items[0].ProjectstatusNameArray[this.items[0].ProjectstatusNameArray.length - 1]
+  uniqueMapFieldName = new Map();
+  uniqueMapFieldNameArray : any ;
+  filterKey : any ;
+  addUniqueValues(arrays: any, excludeArray: any) {
+    arrays.forEach((array: any) => {
+      array.forEach((value: any) => {
+        // Check if the value is not in the excludeArray and not already in the map
+        if (!excludeArray.includes(value) && !this.uniqueMapFieldName.has(value)) {
+          this.uniqueMapFieldName.set(value, true);
+        }
+      });
     });
   }
 
+  containerArrayHoldAllTaskListTask : any = [];
+  ngOnInit() {
+    this.itemService.getItems().subscribe(data => {
+      this.items = data;
+      
+      const excludeValues = ['Created At'] 
+      this.containerArrayHoldAllTaskListTask = []
+      data.map((dbProcessObject : any )=>{
+        this.containerArrayHoldAllTaskListTask = [
+          ...this.containerArrayHoldAllTaskListTask,
+          ...dbProcessObject.taskList
+        ];
+        this.addUniqueValues([dbProcessObject.Column], excludeValues);
+      })
+      console.log(this.containerArrayHoldAllTaskListTask.length)
+      this.uniqueMapFieldNameArray = Array.from(this.uniqueMapFieldName.keys())
+      this.onSelectChange(this.uniqueMapFieldNameArray[0])
+    });
+    
+  }
+  uniqueMapFieldNameHasSelectedUser  = new Map();
+  uniqueMapFieldNameHasSelectedUserArray : any;
+  onSelectChange(eventOrValue: Event | string): void {
+    let selectedValue: string;
+    
+    if (typeof eventOrValue === 'string') {
+      selectedValue = eventOrValue;
+      this.filterKey = eventOrValue;
+    } else {
+      selectedValue = (eventOrValue.target as HTMLSelectElement).value;
+      this.filterKey = selectedValue;
+    }
+  
+    console.log('Selected value:', selectedValue);
+  
+    this.items.forEach((dbProcessObject: any) => {
+      dbProcessObject.taskList.forEach((taskListItem: any) => {
+        const valueToStore = taskListItem[selectedValue];
+        if (valueToStore && !this.uniqueMapFieldNameHasSelectedUser.has(valueToStore)) {
+          this.uniqueMapFieldNameHasSelectedUser.set(valueToStore, true);
+        }
+      });
+    });
+  
+    console.log('Updated Map:', Array.from(this.uniqueMapFieldNameHasSelectedUser.keys()));
+    this.uniqueMapFieldNameHasSelectedUserArray = Array.from(this.uniqueMapFieldNameHasSelectedUser.keys())
+    this.uniqueMapFieldNameHasSelectedUser = new Map();
+  }
+  
+  
   getTaskStatuses() {
     return Object.keys(this.UniqueDataStatus);
   }
@@ -259,6 +317,7 @@ console.log(currentObject, " currentObject -- ")
     }
     return this.countCompleteTask ;
   }
+
 
 }
 

@@ -11,6 +11,7 @@ import {
   addHours,
   addMinutes
 } from 'date-fns';
+import { ChangeDetectorRef } from '@angular/core';
 // import { DatePipe } from '@angular/common';
 import { EventService } from './event.service';
 import { AlarmComponent } from './alarm/alarm.component';
@@ -82,7 +83,7 @@ export class AppComponent implements OnInit {
   // datePipe: any;
   arrangeTaskForm : boolean = true
    
-  constructor(public modal: NgbModal, private eventService: EventService) { }
+  constructor(public modal: NgbModal, private eventService: EventService, private cdr: ChangeDetectorRef) { }
   disableOnmobileAddToScreen : any = true;
   ngOnInit(): void {
     this.loadEvents();
@@ -423,11 +424,11 @@ infoOfChanges : string = 'Save'
     // console.log(this.nowTaskStartTime)
     this.modal.open(this.modalContent, { size: 'md' });
   }
-   taskArrangeFormatValue : any = null;
-   taskArrangeFormatformCostom : any = false;
+   taskArrangeFormatValue : any = "Automatically";
+   taskArrangeFormatformCostom : any = true;
   onSelectChange(event: Event): void {
     this.taskArrangeFormatValue = (event.target as HTMLSelectElement).value;
-    if(this.taskArrangeFormatValue === 'Custom'){
+    if(this.taskArrangeFormatValue !== 'Manual'){
       this.taskArrangeFormatformCostom = true
 
     }else{
@@ -446,22 +447,21 @@ if (!this.costomValueInputToUser) {
 
   arrangeAllTaskWindowclose(){
     // console.log(this.nowTaskStartTime)
+    // console.log(this.costomValueInputToUserValue, this.breakTimebetweenTask , "test your automatically", this.taskArrangeFormatValue)
+    console.log(this.costomValueInputToUserValue, this.breakTimebetweenTask , "test your automatically", this.taskArrangeFormatValue)
     if (this.breakTimebetweenTask === 0) {
       this.breakTimebetweenTask = 5;
     }
-  if (this.taskArrangeFormatValue  === 'Custom') {
-   
+  if (this.taskArrangeFormatValue  === 'Automatically') {
+    // console.log(this.costomValueInputToUserValue, this.breakTimebetweenTask , "test your automatically", this.taskArrangeFormatValue)
     this.TodayTaskArray.forEach((taskIteam:any, index : number)=>{
-      let duration  ;
-      if (this.costomValueInputToUser) {
-        duration = this.costomValueInputToUserValue*60*1000;
-      }else{
-        duration = Math.abs(new Date(taskIteam.end).getTime() - new Date(taskIteam.start).getTime())
-      }
-      // console.log(duration)
-    //   Math.abs(new Date(taskIteam.end).getTime() - new Date(taskIteam.start).getTime())
-    // console.log("this is your breack Time " , this.breakTimebetweenTask , "task duration time " ,this.costomValueInputToUserValue, "this is task duration costom or manual ", this.costomValueInputToUser)
-
+      let duration  = this.costomValueInputToUserValue*60*1000;
+      // if (this.costomValueInputToUser) {
+      //   duration = this.costomValueInputToUserValue*60*1000;
+      // }else{
+      //   duration = Math.abs(new Date(taskIteam.end).getTime() - new Date(taskIteam.start).getTime())
+      // }
+     
       this.TodayTaskArray[index].start = this.nowTaskStartTime ;
       this.TodayTaskArray[index].end = new Date( this.TodayTaskArray[index].start.getTime() + duration ) ;
       this.eventService.updateEvent(`${taskIteam.id[0]}`, `${taskIteam.id[1]}`, {
@@ -472,22 +472,37 @@ if (!this.costomValueInputToUser) {
     
     })
    
-  }else{
+  }
+  // else if (this.taskArrangeFormatValue === 'Automatically') {
+  //   this.TodayTaskArray.forEach((taskIteam:any, index : number)=>{
+  //     this.costomValueInputToUserValue = 25 ;
+  //     this.breakTimebetweenTask  = 5;
+  //     this.TodayTaskArray[index].start = this.nowTaskStartTime ;
+  //     this.TodayTaskArray[index].end = new Date( this.TodayTaskArray[index].start.getTime() + 25 * 60 * 1000 ) ;
+  //     this.eventService.updateEvent(`${taskIteam.id[0]}`, `${taskIteam.id[1]}`, {
+  //       "Due Date": taskIteam.start,
+  //       "End Date": taskIteam.end
+  //     }).subscribe();
+  //     this.nowTaskStartTime =  new Date(this.TodayTaskArray[index].end.getTime() + this.breakTimebetweenTask * 60 * 1000)
+  //   })
+    
+  // }
+  else{
     this.TodayTaskArray.forEach((taskIteam:any, index : number)=>{
       const duration = Math.abs(new Date(taskIteam.end).getTime() - new Date(taskIteam.start).getTime())
       this.TodayTaskArray[index].start = this.nowTaskStartTime ;
-      this.TodayTaskArray[index].end = new Date( this.TodayTaskArray[index].start.getTime() + duration ) ;
+      this.TodayTaskArray[index].end = new Date( this.TodayTaskArray[index].start.getTime() + duration  ) ;
+      console.log( this.TodayTaskArray[index].start , "    ",  this.TodayTaskArray[index].end)
       this.eventService.updateEvent(`${taskIteam.id[0]}`, `${taskIteam.id[1]}`, {
         "Due Date": taskIteam.start,
         "End Date": taskIteam.end
       }).subscribe();
       this.nowTaskStartTime =  new Date(this.TodayTaskArray[index].end.getTime() + this.breakTimebetweenTask * 60 * 1000)
     })
-    
-    // console.log("this is after update", this.TodayTaskArray)
   }
   this.ngOnInit()
-  this.taskArrangeFormatformCostom = false
+  this.ngOnInit();
+  this.taskArrangeFormatformCostom = true
   }
   // formatDateForchange(date: Date): any {
   //   console.log(("Hello console Dhiraj"), this.datePipe.transform(date, 'yyyy-MM-ddTHH:mm'));

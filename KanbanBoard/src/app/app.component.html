@@ -75,11 +75,18 @@
           <strong>{{ key }}</strong>
         </h6>
         <div class="task-container ">
+
           <div *ngFor="let tasklistitem of items[0].taskList">
             <div *ngIf="key == tasklistitem.statusName" >
+
+              
+
               <div class="task mt-2" [attr.id]="tasklistitem.eventId" draggable="true"
                 (dragstart)="drag($event, key, tasklistitem.eventId, tasklistitem.templateId, tasklistitem.botId)" >
                 <div class="card" >
+
+                
+
                   <div style="padding: 5px 10px;">
                     <div class="card-top">
                       <p style="margin: 0px; padding: 0px; flex: 1;" title="Task Creator">
@@ -90,7 +97,7 @@
                     <div class="task-list extra-m-p">
                       <p>{{tasklistitem.Task || "Task Not Available"}}</p>
                     </div>
-                    <div class="icon-container" style="">
+                    <div class="icon-container" >
                       <p style="flex: 1;" class="font-size extra-m-p">{{tasklistitem.Assignee || "Not Available"}}</p>
                       <p class="font-size extra-m-p">
                         <i class="fa-solid fa-calendar-days"></i> {{ParseDate(tasklistitem['Created At'] || "Invalid Date")}}

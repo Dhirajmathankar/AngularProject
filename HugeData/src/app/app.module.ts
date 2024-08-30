@@ -1,13 +1,11 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { CommonModule } from '@angular/common';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { HttpClientModule } from '@angular/common/http';
-import { TodolistComponent } from './todolist/todolist.component';
-import { BacktasklistComponent } from './backtasklist/backtasklist.component';
-import { FormDataComponent } from './form-data/form-data.component';
+;
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -20,9 +18,6 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
   declarations: [
     AppComponent,
     NavBarComponent,
-    TodolistComponent,
-    BacktasklistComponent,
-    FormDataComponent
   ],
   imports: [
     BrowserModule,
@@ -32,7 +27,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     MatFormFieldModule,
     MatSelectModule,
     ReactiveFormsModule,
-    DragDropModule
+    DragDropModule,
+    CommonModule
   ],
   providers: [
     provideAnimationsAsync()

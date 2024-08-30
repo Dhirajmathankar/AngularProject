@@ -275,7 +275,7 @@ app.get('/data/:id', async (req, res) => {
 		const id = req.params.id;
 		const objectId = new ObjectId(id);
 		const pipeline = [
-			{ $match: { _id: objectId } }
+			// { $match: { _id: objectId } }
 		];
 		const GetData = await collection.aggregate(pipeline).toArray();
 		if (GetData.length > 0) {
