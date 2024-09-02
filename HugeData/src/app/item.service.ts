@@ -25,6 +25,14 @@ export class ItemService {
   getItems(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/data/${this.ProjectId}`);
   }
+  getItemsFilterBasOnFieldName(fieldName : any): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/filterFieldName/${fieldName}`);
+  }
+
+  getItemsOfUniqueField(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/data`);
+  }
+
   getFormOptions(eventId: any): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/form-options/${eventId}`);
   }

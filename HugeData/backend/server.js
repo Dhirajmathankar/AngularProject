@@ -291,6 +291,82 @@ app.get('/data/:id', async (req, res) => {
 	}
 });
 
+app.get('/data', async(req, res)=>{
+	try {
+		await client.connect();
+		const database = client.db('Kanban');
+		const collection = database.collection('projects');
+		const pipeline = [
+		  { 
+			$match: { 
+			  Column: { $exists: true, $ne: null } 
+			}
+		  },
+		  {
+			$group: {
+			  _id: null,
+			  uniqueValues: {
+				$addToSet: "$Column"
+			  }
+			}
+		  },
+		  {
+			$project: {
+			  _id: 0,            
+			  uniqueValues: 1    
+			}
+		  }
+		];
+	  
+		const GetData = await collection.aggregate(pipeline).toArray();
+		if (GetData.length > 0) {
+		  res.status(200).send({Data:GetData[0]['uniqueValues']});
+		} else {
+		  res.status(404).send('Data not found');
+		}
+	  } catch (err) {
+		console.error(err);
+		res.status(500).send('An error occurred');
+	  } finally {
+		await client.close();
+	  }	  
+})
+
+app.get('/filterFieldName/:fieldName', async (req, res)=>{
+	try {
+		await client.connect();
+		const database = client.db('Kanban');
+		const collection = database.collection('projects');
+	  
+		const FieldName = req.params.fieldName;
+	  
+		const pipeline = [
+			{
+			  $match: {
+				taskList: {
+				  $elemMatch: {
+					[FieldName]: { $exists: true, $ne: null } 
+				  }
+				}
+			  }
+			},
+		  ];
+		  
+	  
+		const GetData = await collection.aggregate(pipeline).toArray();
+		if (GetData.length > 0) {
+			const newTaskList = GetData.flatMap(item => item.taskList);
+		  res.status(200).send({ Data: newTaskList });
+		} else {
+		  res.status(404).send('Data not found');
+		}
+	  } catch (err) {
+		console.error(err);
+		res.status(500).send('An error occurred');
+	  } finally {
+		await client.close();
+	  }	  
+})
 app.listen(PORT, () => {
 	console.log(`Server running on http://localhost:${PORT}`);
 });
