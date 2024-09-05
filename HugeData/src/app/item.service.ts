@@ -41,10 +41,10 @@ export class ItemService {
   }
 
   body: any = {}
-  updateTaskStatus( columnId: string, eventId: string, botId : string) {
+  updateTaskStatus( columnId: string, eventId: string, dynamicFiledName: any) {
     this.body['columnId'] = columnId;
     this.body['eventId'] = eventId;
-    this.body['botId'] = botId;
+    this.body['dynamicFiledName'] = dynamicFiledName;
     return this.http.put<any>(`${this.apiUrl}/data/${this.ProjectId}`, this.body);
   }
 

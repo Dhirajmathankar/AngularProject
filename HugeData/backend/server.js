@@ -211,18 +211,18 @@ app.put('/data/:id', async (req, res) => {
 		const collection = database.collection('projects');
 
 		const id = req.params.id;
-		const {eventId, columnId, botId} = req.body;
+		const {eventId, columnId, dynamicFiledName} = req.body;
+		const statusNameField = `taskList.$.${dynamicFiledName}`;
 		const GetData = await collection.findOneAndUpdate(
 			{
-				_id: new ObjectId(id),
 				'taskList.eventId': eventId
 			},
 			{
 				$set: {
-					'taskList.$.statusName': columnId,
-					'taskList.$.botId': botId
+					[statusNameField]: columnId,
 				}
-			}
+			},
+			{ returnOriginal: false } 
 		);
 		if (GetData.length > 0) {
 			res.send(JSON.stringify(GetData));

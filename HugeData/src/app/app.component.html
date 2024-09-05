@@ -14,7 +14,7 @@
   </div>
 </div> -->
 
-<!-- <section *ngIf="sucessAlert"
+<section *ngIf="sucessAlert"
   style="position: fixed; right: 0px; top: 10px; padding: 10px; color: white; z-index: 1; background-color: rgb(0, 198, 0); width: 200px; box-shadow: 0px 0px 20px 5px gray; border-radius: 5px; ">
   <div>
     <div>
@@ -25,16 +25,16 @@
       </ul>
     </div>
   </div>
-</section> -->
+</section>
 
-<!-- <section *ngIf="Alert"
+<section *ngIf="Alert"
   style="position: fixed; right: 0px; top: 10px; padding: 10px; color: white; z-index: 1; background-color: rgb(202, 69, 2); width: 200px; box-shadow: 0px 0px 20px 5px gray;  border-radius: 5px;">
   <div>
     <div>
       You are not authorized to drop the task into {{showColumnNameInAlert}} column.
     </div>
   </div>
-</section> -->
+</section>
 
 <nav class="navbar navbar-light bg-light" style="box-shadow: 0px 1px 3px 0px gray;">
   <div class="container-fluid">
@@ -65,7 +65,10 @@
       </div>
       <div class="" style="margin-left: 5px;">
         <select class="form-select" id="autoSizingSelect" (change)="onSelectChange($event)">
-          <option *ngFor="let allField of uniqueMapFieldNameArray" [value]="allField">{{allField}}</option>
+          <option  [value]="filterKey" selected="filterKey">{{filterKey}}</option>
+          <ng-container *ngFor="let allField of uniqueMapFieldNameArray">
+            <option *ngIf="allField !== filterKey" [value]="allField">{{allField}}</option>
+          </ng-container>
         </select>
       </div>
     </div>
@@ -117,7 +120,8 @@
             <!-- {{key}}---{{tasklistitem[filterKey]}} -- {{filterKey}} -->
             <div *ngIf="key === tasklistitem[filterKey]">
               <div class="task mt-1" [attr.id]="tasklistitem.eventId" draggable="true"
-                (dragstart)="drag($event, key, tasklistitem.eventId, tasklistitem.templateId, tasklistitem.botId)">
+                (dragstart)="drag($event, key, tasklistitem)">
+                <input type="checkbox" (change)="selectTask($event, tasklistitem)">
                 <div class="card" data-bs-toggle="collapse"
                   [attr.data-bs-target]="'#' + 'toggle'  +  tasklistitem.eventId" aria-expanded="false"
                   [attr.aria-controls]="'toggle' + tasklistitem.eventId">
@@ -170,7 +174,85 @@
 
 
 
+<!-- <nav class="navbar navbar-light bg-light" style="box-shadow: 0px 1px 3px 0px gray;">
+  <div class="container-fluid">
+    <div>
+      <i class="fa-solid fa-clipboard " style="font-size: 20px; color: #0481e6;"></i><b>
+        Huge Valume Data
+      </b>
+    </div>
+    <div class="d-flex">
+      <div class="dropdown">
+        <input #firstInput class="form-control me-2" type="search" (input)="searchTaskForSpecificeColumn($event)" placeholder="Search" aria-label="Search">
+      </div>
+      <div class="" style="margin-left: 5px;">
+        <select class="form-select" id="autoSizingSelect" (change)="onSelectChange($event)">
+          <option *ngFor="let allField of uniqueMapFieldNameArray" [value]="allField">{{allField}}</option>
+        </select>
+      </div>
+    </div>
 
+  </div>
+</nav>
+
+<div class=" " style="display: flex; justify-content: center; width: 100%;"
+  *ngIf="!uniqueMapFieldNameHasSelectedUserArray.length || !uniqueMapFieldNameArray.length">
+  <img
+    src="https://static.vecteezy.com/system/resources/previews/023/914/428/non_2x/no-document-or-data-found-ui-illustration-design-free-vector.jpg"
+    style="height: 25rem;" alt=" Sorry">
+</div>
+
+
+<div class="main-con" *ngIf="uniqueMapFieldNameHasSelectedUserArray.length && containerArrayHoldAllTaskListTask.length"> 
+  <div class="board flex w-100" #boardContainer>
+    <div *ngFor="let key of uniqueMapFieldNameHasSelectedUserArray" class="column">
+      <div [id]="key" (drop)="drop($event, key)" (dragover)="allowDrop($event)">
+        <h6 class="column-name" style="color: white;     padding-bottom: 5px;">
+          <strong>{{ key }}</strong>
+          <input #secondInput class="form-control me-2" type="search" (input)="searchTaskForSpecificeColumnTaskListTask($event,  key)" style="    width: 80%;
+          margin-left: 12%;
+          height: 20px; padding: 2px;" placeholder="Search" aria-label="Search">
+        </h6>
+        <div class="task-container " *ngIf="containerArrayHoldAllTaskListTask">
+          <div *ngFor="let tasklistitem of containerArrayHoldAllTaskListTask">
+            <div *ngIf="key === tasklistitem[filterKey]">
+              <div class="task mt-1" [attr.id]="tasklistitem.eventId" draggable="true"
+                (dragstart)="drag($event, key, tasklistitem.eventId, tasklistitem.templateId, tasklistitem.botId)">
+                <input type="checkbox" (change)="selectTask($event, tasklistitem)">
+                <div class="card" data-bs-toggle="collapse"
+                  [attr.data-bs-target]="'#' + 'toggle'  +  tasklistitem.eventId" aria-expanded="false"
+                  [attr.aria-controls]="'toggle' + tasklistitem.eventId">
+
+
+                  <div style="padding: 0px 5px;">
+                    <div class="card-top">
+                      <p style="margin: 0px; padding: 0px; flex: 1;" title="Task Creator">
+                        <i class="fa-solid fa-clipboard-list"></i>
+                        {{tasklistitem.Task || "Task Not Available"}}
+                      </p>
+                    </div>
+                    <div class="collapse multi-collapse" [id]="'toggle' + tasklistitem.eventId">
+                      <div class="task-list extra-m-p" style="margin: -5px ; margin-left: 0px; padding: 0px;">
+                        <p style="margin: 0px; padding: 0px;">{{tasklistitem['Task Creator'] || "Not Available" }}</p>
+                      </div>
+                      <div class="icon-container" style="">
+                        <p style="flex: 1;" class="font-size extra-m-p">{{tasklistitem.Assignee || "Not Available"}}</p>
+                        <p class="font-size extra-m-p">
+                          <i class="fa-solid fa-calendar-days"></i> {{ParseDate(tasklistitem['Created At'] || "Invalid
+                          Date")}}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
 
 
 

@@ -144,8 +144,16 @@ export class AppComponent implements AfterViewInit {
       const excludeValues = ['Created At', 'botId', 'eventId', 'Due Date', 'CreatedAt']
       this.addUniqueValues(data['Data'], excludeValues);
       this.uniqueMapFieldNameArray = Array.from(this.uniqueMapFieldName.keys())
-      this.onSelectChange(this.uniqueMapFieldNameArray[0])
-      console.log("this is your unique data", this.uniqueMapFieldNameArray);
+      // this.onSelectChange(this.uniqueMapFieldNameArray[0])
+      // this.onSelectChange("Position")
+      // console.log( localStorage.getItem("fieldNameOfSelect") === null)
+      if (localStorage.getItem("fieldNameOfSelect") === null) {
+        this.onSelectChange(this.uniqueMapFieldNameArray[0])
+        localStorage.setItem("fieldNameOfSelect", this.uniqueMapFieldNameArray[0])
+      }else{
+        this.filterKey = localStorage.getItem("fieldNameOfSelect")+ "";
+        this.onSelectChange(this.filterKey)
+      }
     })
   }
   uniqueMapFieldNameHasSelectedUser = new Map();
@@ -162,7 +170,9 @@ export class AppComponent implements AfterViewInit {
     } else {
       selectedValue = (eventOrValue.target as HTMLSelectElement).value;
       this.filterKey = selectedValue;
+      localStorage.setItem("fieldNameOfSelect", selectedValue)
     }
+    console.log("localsotrage ----------" , localStorage.getItem("fieldNameOfSelect"))
     await this.itemService.getItemsFilterBasOnFieldName(selectedValue).subscribe((data: any) => {
       this.containerArrayHoldAllTaskListTask = data['Data']
       // this.HoldDataForSearch = []
@@ -189,7 +199,7 @@ export class AppComponent implements AfterViewInit {
     //       this.uniqueMapFieldNameHasSelectedUser.set(valueToStore, true);
     //     }
     //   });
-    // });
+    // }); 
 
     // console.log('Updated Map:', Array.from(this.uniqueMapFieldNameHasSelectedUser.keys()));
 
@@ -283,11 +293,35 @@ export class AppComponent implements AfterViewInit {
     event.preventDefault();
   }
 
-  drag(event: DragEvent, task: any, eventId: string, templateId: string, botId: string) {
+  selectedTasks: any[] = [];
 
-    this.eventId = eventId;
+selectTask(event: any, task: any) {
+  if (event.target.checked) {
+    this.selectedTasks.push(task);
+  } else {
+    const index = this.selectedTasks.findIndex(t => t.eventId === task.eventId);
+    if (index > -1) {
+      this.selectedTasks.splice(index, 1);
+    }
+  }
+}
+
+closeAler(messageValue : string){
+  setTimeout(() => {
+    this.showColumnNameInAlert = messageValue;
+    this.Alert = false
+  }, 5000)
+}
+  async drag(event: DragEvent, dragColumnName: any, task : any) {
+    
+    if (this.selectedTasks.length === 0) {
+      this.selectedTasks.push(task)
+    }
+    this.eventId = task.eventId;
+    let botId = task.botId!;
     this.XmandatorySetCss = true;
-    this.itemService.getBotIdForValidation(botId).subscribe(data => {
+   try {
+   await this.itemService.getBotIdForValidation(botId).subscribe(data => {
       this.Alert = false
       this.sucessAlert = true;
       // this.validationArray = data.data
@@ -321,7 +355,7 @@ export class AppComponent implements AfterViewInit {
         }
 
         if (currentObject.category === "Manual" && currentObject.botId.toString() !== botId) {
-          manualCategoryObjects.set(currentObject.botId.toString(), { 'botId': currentObject.botId.toString(), "statusName": currentObject.statusName.toString() });
+          manualCategoryObjects.set(currentObject.botId.toString(), { 'botId': currentObject.botId.toString(), "statusName": currentObject[this.filterKey].toString() });
         }
 
         while (currentObject.successor.length > 0 && current.successorIndex < currentObject.successor.length) {
@@ -334,7 +368,7 @@ export class AppComponent implements AfterViewInit {
           }
 
           if (nextObject.category === "Manual") {
-            manualCategoryObjects.set(nextObject.botId.toString(), { 'botId': nextObject.botId.toString(), "statusName": nextObject.statusName.toString() });
+            manualCategoryObjects.set(nextObject.botId.toString(), { 'botId': nextObject.botId.toString(), "statusName": nextObject[this.filterKey].toString() });
             stack.pop();
             if (stack.length > 0) {
               stack[stack.length - 1].successorIndex++;
@@ -358,6 +392,10 @@ export class AppComponent implements AfterViewInit {
       console.log("this is your manual category", manualCategoryObjects, "    ", this.validationArray);
 
     })
+   } catch (error) {
+    this.showColumnNameInAlert = error + "";
+    this.closeAler("")
+   }
 
     setTimeout(() => {
       this.sucessAlert = false
@@ -369,24 +407,42 @@ export class AppComponent implements AfterViewInit {
 
 
   showColumnNameInAlert = ""
-  drop(event: DragEvent, columnId: string) {
+ async drop(event: DragEvent, columnId: string) {
+    console.log("this is drop", event, "  ", columnId, "  ", this.selectedTasks)
     this.XmandatorySetCss = false;
     event.preventDefault();
     const data = event.dataTransfer?.getData("text/plain");
 
-    const foundItem = this.validationArray.find((validationArrayItem: ValidationItem) => validationArrayItem.statusName === columnId);
-    if (foundItem) {
-      this.itemService.updateTaskStatus(columnId, this.eventId, foundItem.botId).subscribe(data => {
-      });
+    try {
+      const foundItem = this.validationArray.find((validationArrayItem: ValidationItem) => validationArrayItem.statusName === columnId);
+      await this.selectedTasks.map((task:any)=>{
+        console.log("this is task map ", columnId, task.eventId, this.filterKey )
+        this.itemService.updateTaskStatus(columnId, task['eventId'], this.filterKey).subscribe(data => {
+          console.log(data)
+          this.ngOnInit();
+  
+        });
+      })
+      //  this code for validation 
+      // if (foundItem) {
+      //   this.selectedTasks.map((task:any)=>{
+      //     this.itemService.updateTaskStatus(columnId, task['eventId'], this.filterKey).subscribe(data => {
+      //     });
+      //   })
+      // } else {
+      //   this.sucessAlert = false
+      //   this.Alert = true;
+      //   this.showColumnNameInAlert = columnId
+      //   setTimeout(() => {
+      //     this.Alert = false
+      //   }, 5000)
+      // }
       this.ngOnInit();
-    } else {
-      this.sucessAlert = false
-      this.Alert = true;
-      this.showColumnNameInAlert = columnId
-      setTimeout(() => {
-        this.Alert = false
-      }, 5000)
+      this.selectedTasks = []
+    } catch (error) {
+     console.log(error) 
     }
+   
   }
 
   capitalizeInput(event: Event) {
@@ -396,7 +452,6 @@ export class AppComponent implements AfterViewInit {
 
   getCountCompleteTask(tasklist: any) {
     this.countCompleteTask = 0;
-    // console.log(this.itemListObject, "undefine", tasklist, )
     for (let valueoftasklist of tasklist) {
       if (valueoftasklist.statusName == this.items[0].ProjectstatusNameArray[this.items[0].ProjectstatusNameArray.length - 1]) {
         ++this.countCompleteTask;
